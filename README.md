@@ -1,3 +1,5 @@
+<!-- README.md file for the project written in the markdown language. Details how to start the application. -->
+
 # Final Year Undergraduate Project
 
 Interactive visualisation dashboard system for analysis on youth service availability and knife crime in London
@@ -10,7 +12,9 @@ Interactive visualisation dashboard system for analysis on youth service availab
 - MySQL database powered with AWS RDS.
 - Skeleton login code provided by [Programmerblog.net](http://programmerblog.net/nodejs-passport-login-mysql/)
 
-- Run with `npm start` or `nodemon start`
+
+- Clone repository to local machine using `git clone https://github.com/WallaceDevelopment/FinalYearProject`
+- `cd` to the directory and run with `npm start` or `nodemon start`
 
 ---
 
@@ -25,6 +29,7 @@ Interactive visualisation dashboard system for analysis on youth service availab
 
 ## Author
 - [Lee Wallace](https://leewallace.me/)
+
 
 
 
