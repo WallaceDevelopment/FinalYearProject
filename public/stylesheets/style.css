@@ -49,3 +49,15 @@ body {
 .error{
   color: red;
 }
+
+.navbar-inverse{
+  position: relative;
+  padding-bottom: 5px;
+  margin-top: -50px;
+  width: 960px;
+  margin-right: 5px;
+  padding-right: 12px;
+  padding-left: 12px;
+}
+
+
