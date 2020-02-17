@@ -6,9 +6,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-// Set routes for html pages
+// Set routes for html pages - new pages need to be added here to link them with their route files
 var index = require('./routes/index');
 var users = require('./routes/users');
+var register = require('./routes/register'); 
 
 // 'app' is used in place of express for readability
 var app = express();
@@ -51,6 +52,7 @@ app.use(passport.session());
 
 app.use('/', index); // On starting, the '/' file path will route to the index html file.
 app.use('/users', users); // The /users file path will route to the users html file.
+app.use('/register', register); // The /register file path will use the register js file for example.
 
 // passport strategy -- the express session middleware before calling passport.session()
 passport.use('local', new LocalStrategy({

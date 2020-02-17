@@ -12,6 +12,7 @@ router.get('/', isAuthenticated, function(req, res, next) {
 
 });
 
+// access to this page is restricted unless a user is authenticated through passport.
 function isAuthenticated(req, res, next) {
   if (req.session.user)
       return next();
