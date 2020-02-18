@@ -116,6 +116,32 @@ app.post("/signin", passport.authenticate('local', {
     res.render('login/index',{'message' :req.flash('message')});
 });
 
+// Register Form Initial POST
+
+app.post("/register", function(req, res){
+
+  username = req.body.username
+  fullname = req.body.fullname
+  password = req.body.password
+
+  console.log(username)  // the console log at this point shows that the form has been parsed correctly with body-parser.
+  console.log(fullname)
+  console.log(password)
+
+  connection.connect(function(err) {
+    if (err) throw err;
+    console.log("Connected!");
+    var sql = "INSERT INTO tbl_users (username, password, full_name) VALUES ('testuser', 'testpassword', 'testfullname');";
+    connection.query(sql, function (err, result) {
+      if (err) throw err;
+      console.log("1 record inserted");
+    })
+  })
+    });
+
+//
+
+
 
 // When logging out, this code will 'destroy' the session and redirect the user to the /signin page.
 app.get('/logout', function(req, res){
