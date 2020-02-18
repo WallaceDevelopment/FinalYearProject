@@ -3,16 +3,15 @@ block content
         .wrapper
           form.form-signin(method='post' action='/register')
             h3.form-signin-heading Register a new user
-            div.form-group
-            label(for='name') Name:
-            input#name.form-control(type='text', placeholder='Firstname' name='name')
-            div.form-group
-            label(for='email') Email:
-            input#email.form-control(type='email', placeholder='hello@example.com' name='email')
-            div.form-group
-            label(for='password') Password:
-            input#pw.form-control(type='password' name='password')
-            div.form-group
-            label(for='pw2') Confirm Password:
-            input#pw2.form-control(type='password' name='confirmPassword')
+            |
+            - if(message){
+            p(style='color:red') #{message}
+            - }
+            input.form-control(type='text', name='username', placeholder='Username' required)
+            |
+            input.form-control(type='text', name='fullname', placeholder='Full Name' required)
+            |
+            input.form-control(type='password', name='password', placeholder='Password' required)
+            label.checkbox
+            |
             button.btn.btn-lg.btn-primary.btn-block(type='submit') Register
