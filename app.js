@@ -120,23 +120,28 @@ app.post("/signin", passport.authenticate('local', {
 
 app.post("/register", function(req, res){
 
-  username = req.body.username
-  fullname = req.body.fullname
-  password = req.body.password
+  var values=[ // reads the post data from the /register form
+  username = req.body.username,
+  password = req.body.password,
+  fullname = req.body.fullname 
+  ]
 
   console.log(username)  // the console log at this point shows that the form has been parsed correctly with body-parser.
   console.log(fullname)
   console.log(password)
 
-  connection.connect(function(err) {
+  // this establishes a connection with the database and inserts the parsed data above into tbl_users with variables.
+  connection.connect(function(err) { 
     if (err) throw err;
     console.log("Connected!");
-    var sql = "INSERT INTO tbl_users (username, password, full_name) VALUES ('testuser', 'testpassword', 'testfullname');";
-    connection.query(sql, function (err, result) {
+    var sql = "INSERT INTO tbl_users (username, password, full_name) VALUES ('"+username+"', '"+password+"', '"+fullname+"')"
+    connection.query(sql, function (err, result) { //values inserted into the query
       if (err) throw err;
-      console.log("1 record inserted");
-    })
-  })
+      console.log("Success!: 1 record inserted"); // logs a success of the operation in the console.
+      res.writeHead(302,{Location: '/users'}); // redirects the user after successul registration
+      res.end()
+    }) 
+  }) 
     });
 
 //
@@ -169,3 +174,8 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+
+// REFERENCES
+
+// https://www.w3docs.com/snippets/nodejs/how-to-redirect-a-web-page-with-node-js.html
