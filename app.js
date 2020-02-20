@@ -25,16 +25,16 @@ var crypto   = require('crypto'); //crypto implements crytographic functionaliti
 
 // Login Script. This is provided by Programmerblog.net.
 var passport = require('passport');
-var LocalStrategy  = require('passport-local').Strategy; // passport-local authenticates with a username and password
+var LocalStrategy  = require('passport-local').Strategy; // Passport-local authenticates with a username and password
 var connection     = require('./lib/dbconn'); // dbconn file in lib contains MySQL credentials to AWS RDS database.
 
  var sess  = require('express-session'); // express-session handles user sessions
  var Store = require('express-session').Store
  var BetterMemoryStore = require(__dirname + '/memory')
- var store = new BetterMemoryStore({ expires: 60 * 60 * 1000, debug: true }) // session handling in memory
+ var store = new BetterMemoryStore({ expires: 60 * 60 * 1000, debug: true }) // Session handling in memory
  app.use(sess({
-    name: 'FinalYearProject-Session', // session name
-    secret: '749ed3c859', // session secret
+    name: 'FinalYearProject-Session', // Session name
+    secret: '749ed3c859', // Session secret
     store:  store,
     resave: true,
     saveUninitialized: true
@@ -52,33 +52,33 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/', index); // On starting, the '/' file path will route to the index html file.
-app.use('/users', users); // The /users file path will route to the users html file.
-app.use('/register', register); // The /register file path will use the register js file for example.
+app.use('/', index);              // The '/' directory will display the index page
+app.use('/users', users);         // The /users directory will display the users page
+app.use('/register', register);   // The /register directory will display the register page
 
 // passport strategy -- the express session middleware before calling passport.session()
 passport.use('local', new LocalStrategy({
   usernameField: 'username',
   passwordField: 'password',
-  passReqToCallback: true //passback entire req to call back
+  passReqToCallback: true         //passback entire req to call back
 } , function (req, username, password, done){
       console.log(username+' = '+ password);
-      // if the username AND password are both null, then display a message.
-      if(!username || !password ) { return done(null, false, req.flash('message','All fields are required.')); } 
-      // the salt used for passwords in this system is found below, this will be kept within an environment variable.
-      var salt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6';
-      // find username entered by the user.
-      connection.query("select * from tbl_users where username = ?", [username], function(err, rows){
+      
+      if(!username || !password ) { return done(null, false, req.flash('message','All fields are required.')); } // If username + password fields null, then throw err.
+      
+      var salt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6'; 
+      
+      connection.query("select * from tbl_users where username = ?", [username], function(err, rows){       // Find username entered by the user.
           console.log(err);
         if (err) return done(req.flash('message',err));
 
-        // Will search for both username and password within the rows in the database, if not found, then produce message.
-        if(!rows.length){ return done(null, false, req.flash('message','Invalid username or password.')); }
-        // salt variable is updated, the password entered by the user is appended to the salt
-        salt = salt+''+password;
-        // using the crypto module, the variable encPassword is now a sha1 hash of the salt and password
-        var encPassword = crypto.createHash('sha1').update(salt).digest('hex');
-        var dbPassword  = rows[0].password;
+        
+        if(!rows.length){ return done(null, false, req.flash('message','Invalid username or password.')); } // Identify if username exists
+        
+        salt = salt+''+password;      // Concatenate salt and password
+        
+        var encPassword = crypto.createHash('sha1').update(salt).digest('hex');   // Create sha1 hash
+        var dbPassword  = rows[0].password;   // Crawl database to see if password exists
         
         // If the hashed password is not found in the database, then produce message.
         if(!(dbPassword == encPassword)){
@@ -102,14 +102,15 @@ passport.deserializeUser(function(id, done){
     });
 });
 
-// navigating to /signin will render the login/index page
+// Navigating to /signin will render the login/index page
 app.get('/signin', function(req, res){
   res.render('login/index',{'message' :req.flash('message')});
 });
 
-// using the local strategy of a username and a hashed password, this block of code will authenticate the user with
-// a successful outcome redirecting to /users, where it will produce the visualisation dashboard
-// an unsuccessful outcome will redirect the user to the /signin page.
+/* Using the local strategy of a username and a hashed password, this block of code will authenticate the user with
+   a successful outcome redirecting to /users, where it will produce the visualisation dashboard
+   an unsuccessful outcome will redirect the user to the /signin page.
+*/
 app.post("/signin", passport.authenticate('local', {
     successRedirect: '/users',
     failureRedirect: '/signin',
@@ -171,7 +172,6 @@ app.post("/register", function(req, res, done){
     }) 
   });
 
-// VVV The function below, could this be used to redirect after registration and call a hidden function within users?
 
 // When logging out, this code will 'destroy' the session and redirect the user to the /signin page.
 app.get('/logout', function(req, res){
@@ -180,7 +180,7 @@ app.get('/logout', function(req, res){
     res.redirect('/signin');
 });
 
-// catch 404 and forward to error handler
+// Catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
@@ -193,7 +193,7 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page - will render a 404 error alongside an error stack for this.
+  // Render the error page - will render a 404 error alongside an error stack for this.
   res.status(err.status || 500);
   res.render('error');
 });
