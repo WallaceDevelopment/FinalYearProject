@@ -122,23 +122,45 @@ app.post("/signin", passport.authenticate('local', {
 
 app.post("/register", function(req, res, done){
 
-  var values=[ // reads the post data from the /register form
-  username = req.body.username,
-  password = req.body.password,
-  fullname = req.body.fullname 
-  ]
-
-  console.log(username)  // the console log at this point shows that the form has been parsed correctly with body-parser.
-  console.log(fullname)
-  console.log(password)
-
   
 
-  // this establishes a connection with the database and inserts the parsed data above into tbl_users with variables.
-  connection.connect(function(err) { 
+  var values=[ // reads the post data from the /register form
+  regUsername = req.body.username,
+  regPassword = req.body.password,
+  regFullName = req.body.fullname 
+  ]
+
+  if(!regUsername || !regPassword || !regFullName) { return done(null, false, req.flash('message','All fields are required.')); } 
+
+  
+    
+
+
+  console.log(regUsername)  // the console log at this point shows that the form has been parsed correctly with body-parser.
+  console.log(regPassword)
+  console.log(regFullName)
+  
+  
+  connection.query(usernameSql, function (err, rows){
     if (err) throw err;
-    console.log("Connected!");
-    var sql = "INSERT INTO tbl_users (username, password, full_name) VALUES ('"+username+"', '"+password+"', '"+fullname+"')"
+    var dbRegUsername  = rows[0].regUsername;
+    var usernameSql = "SELECT * FROM tbl_users WHERE username = ('"+dbRegUsername+"')"
+    if(rows.length){ console.log("username already exists")}
+    console.log("Username already exists")
+    
+  })
+
+
+  // password is hashed using the crypto module
+
+  var regSalt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6'; //ensure that this is in the environment for the future
+  regSalt = regSalt+''+regPassword;
+  var encRegPassword = crypto.createHash('sha1').update(regSalt).digest('hex');
+  console.log(encRegPassword)
+  
+  // this establishes a connection with the database and inserts the parsed data above into tbl_users with variables.
+  
+    var sql = "INSERT INTO tbl_users (username, password, full_name) VALUES ('"+regUsername+"', '"+encRegPassword+"', '"+regFullName+"')"
     connection.query(sql, function (err, result) { //values inserted into the query
       if (err) throw err;
       req.flash('message', 'Registration successful! Log in to continue.')
@@ -147,8 +169,7 @@ app.post("/register", function(req, res, done){
       res.end()
 
     }) 
-  }) 
-    });
+  });
 
 // VVV The function below, could this be used to redirect after registration and call a hidden function within users?
 
