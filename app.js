@@ -120,8 +120,8 @@ app.post("/signin", passport.authenticate('local', {
 
 app.post("/register", function(req, res){
 
-  var values=[ // reads the post data from the /register form
-  username = req.body.username,
+  var values=[ // reads the post data from the /register form 
+  username = req.body.username, // these values need to be sanitized, add in further iteration using express-validator library
   password = req.body.password,
   fullname = req.body.fullname 
   ]
@@ -135,7 +135,7 @@ app.post("/register", function(req, res){
     if (err) throw err;
     console.log("Connected!");
     var sql = "INSERT INTO tbl_users (username, password, full_name) VALUES ('"+username+"', '"+password+"', '"+fullname+"')"
-    connection.query(sql, function (err, result) { //values inserted into the query
+    connection.query(sql, function (err, result) { //values inserted into the query with the sql variable
       if (err) throw err;
       console.log("Success! : 1 record inserted"); // logs a success of the operation in the console.
       res.writeHead(302,{Location: '/users'}); // redirects the user after successul registration
