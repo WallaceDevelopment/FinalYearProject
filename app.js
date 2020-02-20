@@ -137,16 +137,15 @@ app.post("/register", function(req, res){
     var sql = "INSERT INTO tbl_users (username, password, full_name) VALUES ('"+username+"', '"+password+"', '"+fullname+"')"
     connection.query(sql, function (err, result) { //values inserted into the query
       if (err) throw err;
-      console.log("Success!: 1 record inserted"); // logs a success of the operation in the console.
+      console.log("Success! : 1 record inserted"); // logs a success of the operation in the console.
       res.writeHead(302,{Location: '/users'}); // redirects the user after successul registration
       res.end()
+      console.log("Re-directed to home page")
     }) 
   }) 
     });
 
-//
-
-
+// VVV The function below, could this be used to redirect after registration and call a hidden function within users?
 
 // When logging out, this code will 'destroy' the session and redirect the user to the /signin page.
 app.get('/logout', function(req, res){
