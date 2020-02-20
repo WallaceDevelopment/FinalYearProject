@@ -131,28 +131,21 @@ app.post("/register", function(req, res, done){
   regFullName = req.body.fullname 
   ]
 
-  if(!regUsername || !regPassword || !regFullName) { return done(null, false, req.flash('message','All fields are required.')); } 
-
   
-    
-
-
   console.log(regUsername)  // the console log at this point shows that the form has been parsed correctly with body-parser.
   console.log(regPassword)
   console.log(regFullName)
   
-  
-  connection.query(usernameSql, function (err, rows){
-    if (err) throw err;
-    var dbRegUsername  = rows[0].regUsername;
-    var usernameSql = "SELECT * FROM tbl_users WHERE username = ('"+dbRegUsername+"')"
-    if(rows.length){ console.log("username already exists")}
-    console.log("Username already exists")
+  //connection.query(usernameSql, function (err, rows){
+  //  if (err) throw err;
+   // var dbRegUsername  = rows[0].regUsername;
+   // var usernameSql = "SELECT * FROM tbl_users WHERE username = ('"+dbRegUsername+"')"
+   // if(rows.length){ console.log("username already exists")}
+   // console.log("Username already exists")
     
-  })
+  
 
-
-  // password is hashed using the crypto module
+    // password is hashed using the crypto module
 
   var regSalt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6'; //ensure that this is in the environment for the future
   regSalt = regSalt+''+regPassword;
@@ -169,7 +162,7 @@ app.post("/register", function(req, res, done){
       res.writeHead(302,{Location: '/users'}); // redirects the user after successul registration
       res.end()
 
-    }) 
+    })
   });
 
 
