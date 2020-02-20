@@ -7,8 +7,9 @@ router.get('/', isAuthenticated, function(req, res, next) {
 
   var username   = req.session.user.username;
   var full_name  = req.session.user.full_name;
-  
-  res.render('user', { username: username, full_name: full_name });
+  var email = req.session.user.email;
+    
+  res.render('user', { username: username, full_name: full_name, email : email });
 
 });
 

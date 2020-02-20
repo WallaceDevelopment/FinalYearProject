@@ -68,7 +68,7 @@ passport.use('local', new LocalStrategy({
       
       var salt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6'; 
       
-      connection.query("select * from tbl_users where username = ?", [username], function(err, rows){       // Find username entered by the user.
+      connection.query("select * from tbl_users_test where username = ?", [username], function(err, rows){       // Find username entered by the user.
           console.log(err);
         if (err) return done(req.flash('message',err));
 
@@ -97,7 +97,7 @@ passport.serializeUser(function(user, done){
 
 // Deserialize user for the session with the user id from the database.
 passport.deserializeUser(function(id, done){
-    connection.query("select * from tbl_users where id = "+ id, function (err, rows){
+    connection.query("select * from tbl_users_test where id = "+ id, function (err, rows){
         done(err, rows[0]);
     });
 });
@@ -128,7 +128,9 @@ app.post("/register", function(req, res, done){
   var values=[ // reads the post data from the /register form
   regUsername = req.body.username,
   regPassword = req.body.password,
-  regFullName = req.body.fullname 
+  regFullName = req.body.fullname,
+  regEmail = req.body.email,
+  regUserTypeID = '1'
   ]
 
   
@@ -154,7 +156,7 @@ app.post("/register", function(req, res, done){
   
   // this establishes a connection with the database and inserts the parsed data above into tbl_users with variables.
   
-    var sql = "INSERT INTO tbl_users (username, password, full_name) VALUES ('"+regUsername+"', '"+encRegPassword+"', '"+regFullName+"')"
+    var sql = "INSERT INTO tbl_users_test (username, password, full_name, email, userTypeID) VALUES ('"+regUsername+"', '"+encRegPassword+"', '"+regFullName+"', '"+regEmail+"', '"+regUserTypeID+"')"
     connection.query(sql, function (err, result) { //values inserted into the query
       if (err) throw err;
       req.flash('message', 'Registration successful! Log in to continue.')
