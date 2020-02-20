@@ -76,5 +76,10 @@ padding-bottom: 5px;
   padding-left: 12px;
 */
 
+.errmessage{
+  text-align: center;
+  text-decoration: underline;
+}
+
 
 

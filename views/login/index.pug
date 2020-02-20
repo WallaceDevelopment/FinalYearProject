@@ -4,9 +4,15 @@ block content
         form.form-signin(method='post', action='/signin')
           h3.form-signin-heading Login to Dashboard
           |
+          
+
           - if(message){
-            p(style='color:red' text-align='centre') #{message}
+            p(id="errmessage" style='color:red' text-align='centre') #{message}
           - }
+
+
+
+
 
           input.form-control(type='text', name='username', placeholder='Username' required)
           |

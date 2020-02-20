@@ -133,6 +133,12 @@ app.post("/register", function(req, res, done){
   regUserTypeID = '1'
   ]
 
+  var verifyURL = `https://www.google.com/recaptcha/api/siteverify?secret=6Lc109oUAAAAAB-HVAvXZ5bKnfRwbhm2AbjgyNcQ}&response=${captcha}&remoteip=${req.connection.remoteAddress}`;
+  var captcha = req.body['g-recaptcha-response'];
+  if(!captcha){
+  req.flash('message', 'Recaptcha validation failure. Please try again.')
+  return res.redirect("/users");
+}
   
   console.log(regUsername)  // the console log at this point shows that the form has been parsed correctly with body-parser.
   console.log(regPassword)
@@ -192,6 +198,16 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+// Testing Google Recaptcha
+
+
+
+
+ 
+function verifyCaptcha() {
+    document.getElementById('g-recaptcha-error').innerHTML = '';
+}
 
 module.exports = app;
 

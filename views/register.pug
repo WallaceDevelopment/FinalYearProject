@@ -1,7 +1,8 @@
 extends layout
+
 block content
         .wrapper
-          form.form-signin(method='post' action='/register')
+          form.form-signin(method='post' action='/register' onsubmit='return submitUserForm();')
             h3.form-signin-heading Register a new user
             |
             input.form-control(type='text', name='username', placeholder='Username' required)
@@ -12,5 +13,16 @@ block content
             |
             input.form-control(type='password', name='password', placeholder='Password' required)
             label.checkbox
+
+            //- Testing Google Recaptcha
+
+            div(id="html_element" data-sitekey="6Lc109oUAAAAAMgt5gCc7vr1R0yfwi5UuWsmco9n" data-callback="verifyCaptcha")
+            div(id="g-recaptcha-error")
             |
             button.btn.btn-lg.btn-primary.btn-block(type='submit') Register
+            |
+            - if(message){
+            p(style='color:red' text-align='centre') #{message}
+            - }
+
+          <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer> </script>

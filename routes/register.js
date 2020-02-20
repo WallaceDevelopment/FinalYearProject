@@ -8,4 +8,6 @@ router.get('/', function(req, res, next) {
     res.render('register'); //ensure that this is the file name and not a file path when rendering new pages
   
   });
+
+  
 module.exports = router;
