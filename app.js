@@ -140,9 +140,9 @@ app.post("/register", function(req, res, done){
   return res.redirect("/users");
 }
   
-  console.log(regUsername)  // the console log at this point shows that the form has been parsed correctly with body-parser.
-  console.log(regPassword)
-  console.log(regFullName)
+  console.log("*** User has submitted the username: "+ regUsername + " ***")  // the console log at this point shows that the form has been parsed correctly with body-parser.
+  console.log("*** User has submitted the password: "+ regPassword+ " ***")
+  console.log("*** User has submitted the fullname: "+ regFullName + " ***")
   
   //connection.query(usernameSql, function (err, rows){
   //  if (err) throw err;
@@ -158,7 +158,7 @@ app.post("/register", function(req, res, done){
   var regSalt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6'; //ensure that this is in the environment for the future
   regSalt = regSalt+''+regPassword;
   var encRegPassword = crypto.createHash('sha1').update(regSalt).digest('hex');
-  console.log(encRegPassword)
+  console.log("*** The Encoded password is: "+encRegPassword + " ***")
   
   // this establishes a connection with the database and inserts the parsed data above into tbl_users with variables.
   
@@ -166,10 +166,9 @@ app.post("/register", function(req, res, done){
     connection.query(sql, function (err, result) { //values inserted into the query
       if (err) throw err;
       req.flash('message', 'Registration successful! Log in to continue.')
-      console.log("Success! : 1 record inserted"); // logs a success of the operation in the console.
+      console.log("*** Success! | 1 record inserted ***"); // logs a success of the operation in the console.
       res.writeHead(302,{Location: '/users'}); // redirects the user after successul registration
       res.end()
-
     })
   });
 
