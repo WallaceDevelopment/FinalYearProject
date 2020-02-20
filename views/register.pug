@@ -4,9 +4,11 @@ block content
           form.form-signin(method='post' action='/register')
             h3.form-signin-heading Register a new user
             |
-            - if(message){
-            p(style='color:red') #{message}
-            - }
+
+            
+            
+            
+
             input.form-control(type='text', name='username', placeholder='Username' required)
             |
             input.form-control(type='text', name='fullname', placeholder='Full Name' required)

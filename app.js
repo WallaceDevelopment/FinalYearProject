@@ -6,6 +6,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+//include express validator
+
 // Set routes for html pages - new pages need to be added here to link them with their route files
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -118,7 +120,7 @@ app.post("/signin", passport.authenticate('local', {
 
 // Register Form Initial POST
 
-app.post("/register", function(req, res){
+app.post("/register", function(req, res, done){
 
   var values=[ // reads the post data from the /register form
   username = req.body.username,
@@ -130,6 +132,8 @@ app.post("/register", function(req, res){
   console.log(fullname)
   console.log(password)
 
+  
+
   // this establishes a connection with the database and inserts the parsed data above into tbl_users with variables.
   connection.connect(function(err) { 
     if (err) throw err;
@@ -137,10 +141,11 @@ app.post("/register", function(req, res){
     var sql = "INSERT INTO tbl_users (username, password, full_name) VALUES ('"+username+"', '"+password+"', '"+fullname+"')"
     connection.query(sql, function (err, result) { //values inserted into the query
       if (err) throw err;
+      req.flash('message', 'Registration successful! Log in to continue.')
       console.log("Success! : 1 record inserted"); // logs a success of the operation in the console.
       res.writeHead(302,{Location: '/users'}); // redirects the user after successul registration
       res.end()
-      console.log("Re-directed to home page")
+
     }) 
   }) 
     });
