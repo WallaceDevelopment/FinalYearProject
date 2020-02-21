@@ -12,6 +12,7 @@ var { check, validationResult } = require('express-validator');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var register = require('./routes/register'); 
+var changepassword = require ('./routes/changepassword');
 
 // 'app' is used in place of express for readability
 var app = express();
@@ -55,6 +56,7 @@ app.use(passport.session());
 app.use('/', index);              // The '/' directory will display the index page
 app.use('/users', users);         // The /users directory will display the users page
 app.use('/register', register);   // The /register directory will display the register page
+app.use('/changepassword', changepassword);
 
 // passport strategy -- the express session middleware before calling passport.session()
 passport.use('local', new LocalStrategy({
@@ -191,7 +193,7 @@ app.post("/register", [
 
 // Change Password POST Form
 
-app.post("/changepass", function(req, res, done){
+app.post("/change-auth-password", function(req, res, done){
 
 newPass = req.body.passwordchange;
 var newPassSalt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6'; //ensure that this is in the environment for the future
@@ -217,6 +219,35 @@ var newPassSalt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6'; //ensure that this
   })
 
 });
+
+// Same code as the post form 'changepass' but for an unauthenticated user
+
+app.post("/change-unauth-password", function(req, res, done){
+
+  newUser = req.body.newPasswordUsername;
+  newPass = req.body.newPassword;
+
+  var unauthPassSalt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6'; //ensure that this is in the environment for the future
+    unauthPassSalt = unauthPassSalt+''+newPass;
+    var encNewPass = crypto.createHash('sha1').update(unauthPassSalt).digest('hex');
+    console.log("\n *** The New Encoded password is: "+encNewPass + " ***")
+  
+   
+  
+    console.log("\n *** Changing password for user: " + newUser + " *** \r" )
+  
+    var newPassSql = "UPDATE tbl_users_test SET password = '"+encNewPass+"' WHERE username = '"+newUser+"'";
+    // var newPassSql = "UPDATE tbl_users_test set password = 'random' where username = 'testuser';"
+  
+    connection.query(newPassSql, function (err, result) { //values inserted into the query
+      if (err) throw err;
+      console.log("\n *** Success! Password Changed *** \n"); // logs a success of the operation in the console.
+      req.flash('message', 'Password change successful!')
+      res.redirect('/signin');
+   
+    })
+  
+  });
 
 
 
