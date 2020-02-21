@@ -19,3 +19,7 @@ block content
                     td  #{username}
                     td  #{full_name}
                     td  #{email}
+           form.form-signin(method='post', action='/changepass')
+            input.form-control(type='password', name='passwordchange', placeholder='Change Password' required)
+            label.checkbox
+            button.btn.btn-lg.btn-primary.btn-block(type='submit') Change Password

@@ -62,7 +62,8 @@ passport.use('local', new LocalStrategy({
   passwordField: 'password',
   passReqToCallback: true         //passback entire req to call back
 } , function (req, username, password, done){
-      console.log(username+' = '+ password);
+      console.log("\n *** Username Entered: "+ username + " ***");
+      console.log("\n *** Password Entered: "+ password + " *** \n");
       
       if(!username || !password ) { return done(null, false, req.flash('message','All fields are required.')); } // If username + password fields null, then throw err.
       
@@ -82,8 +83,10 @@ passport.use('local', new LocalStrategy({
         
         // If the hashed password is not found in the database, then produce message.
         if(!(dbPassword == encPassword)){
+          console.log("\n *** Login Unsuccessful *** \n")
             return done(null, false, req.flash('message','Invalid username or password.'));
          }
+         console.log("\n *** Login Successful *** \n")
          req.session.user = rows[0]; 
         return done(null, rows[0]);
       });
@@ -131,6 +134,7 @@ app.post("/register", function(req, res, done){
   regUserTypeID = '1'
   ]
 
+  if(regUsername || !regPassword || !regFullName || !regEmail) { return done(null, false, req.flash('message','All fields are required.')); } // If username + password fields null, then throw err.
   
   check('regUsername', 'Username is required').not().isEmpty()
   check('regPassword', 'Your password must be at least 5 characters.').not().isEmpty().isLength({min: 5})
@@ -178,6 +182,53 @@ app.post("/register", function(req, res, done){
     })
   });
 
+// Change Password POST Form
+
+app.post("/changepass", function(req, res, done){
+
+newPass = req.body.passwordchange;
+var newPassSalt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6'; //ensure that this is in the environment for the future
+  newPassSalt = newPassSalt+''+newPass;
+  var encNewPass = crypto.createHash('sha1').update(newPassSalt).digest('hex');
+  console.log("\n *** The New Encoded password is: "+encNewPass + " ***")
+
+  currUser = req.user.username;
+
+  console.log("\n *** Changing password for user: " + currUser + " *** \r" )
+
+  var newPassSql = "UPDATE tbl_users_test SET password = '"+encNewPass+"' WHERE username = '"+currUser+"'";
+  // var newPassSql = "UPDATE tbl_users_test set password = 'random' where username = 'testuser';"
+
+  connection.query(newPassSql, function (err, result) { //values inserted into the query
+    if (err) throw err;
+    console.log("\n *** Success! Password Changed *** \n"); // logs a success of the operation in the console.
+    req.flash('message', 'Password change successful!')
+    req.logout();
+    res.redirect('/signin');
+
+
+  })
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // When logging out, this code will 'destroy' the session and redirect the user to the /signin page.
 app.get('/logout', function(req, res){
@@ -206,11 +257,7 @@ app.use(function(err, req, res, next) {
 
 // Testing Google Recaptcha
 
-
-
-
- 
-function verifyCaptcha() {
+ function verifyCaptcha() {
     document.getElementById('g-recaptcha-error').innerHTML = '';
 }
 
