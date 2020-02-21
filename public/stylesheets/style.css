@@ -60,6 +60,7 @@ body {
 
 .error{
   color: red;
+  display:none;
 }
 
 .navbar-inverse{
@@ -76,9 +77,10 @@ padding-bottom: 5px;
   padding-left: 12px;
 */
 
-.errmessage{
+.alert{
   text-align: center;
   text-decoration: underline;
+  display: none;
 }
 
 

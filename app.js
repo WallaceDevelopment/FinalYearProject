@@ -5,7 +5,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var { check, validationResult } = require('express-validator');
 //include express validator
 
 // Set routes for html pages - new pages need to be added here to link them with their route files
@@ -123,15 +123,21 @@ app.post("/signin", passport.authenticate('local', {
 
 app.post("/register", function(req, res, done){
 
-  
-
-  var values=[ // reads the post data from the /register form
+    var values=[ // Read input from post form
   regUsername = req.body.username,
   regPassword = req.body.password,
   regFullName = req.body.fullname,
   regEmail = req.body.email,
   regUserTypeID = '1'
   ]
+
+  
+  check('regUsername', 'Username is required').not().isEmpty()
+  check('regPassword', 'Your password must be at least 5 characters.').not().isEmpty().isLength({min: 5})
+  check('regFullName').not().isEmpty()
+  check('email', 'Please enter a valid email.').not().isEmpty().isEmail().normalizeEmail()
+
+  
 
   var verifyURL = `https://www.google.com/recaptcha/api/siteverify?secret=6Lc109oUAAAAAB-HVAvXZ5bKnfRwbhm2AbjgyNcQ}&response=${captcha}&remoteip=${req.connection.remoteAddress}`;
   var captcha = req.body['g-recaptcha-response'];

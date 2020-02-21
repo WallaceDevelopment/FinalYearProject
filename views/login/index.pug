@@ -6,13 +6,13 @@ block content
           |
           
 
-          - if(message){
-            p(id="errmessage" style='color:red' text-align='centre') #{message}
+          
+
+          - if(message !=''){
+            div(class='alert alert-info' text-align='centre' style='display:block') #{message}
           - }
 
-
-
-
+          
 
           input.form-control(type='text', name='username', placeholder='Username' required)
           |
@@ -23,3 +23,5 @@ block content
           |
         form.form-signin(action="/register")
           button.btn.btn-sm.btn-default.btn-block(type='submit') Register a new user
+
+
