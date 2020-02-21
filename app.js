@@ -124,8 +124,22 @@ app.post("/signin", passport.authenticate('local', {
 
 // Register Form Initial POST
 
-app.post("/register", function(req, res, done){
+app.post("/register", [
+  check('username').not().isEmpty(),
+  check('password').not().isEmpty().isLength({min: 5}).withMessage('Password must have a minimum of 5 characters.'),
+  check('fullname').not().isEmpty(),
+  check('email').not().isEmpty().isEmail().normalizeEmail().withMessage('Please enter a valid email.')
 
+], function(req, res, done){
+
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    console.log(errors)
+    req.flash('message', 'Recaptcha validation failure. Please try again.')
+    return res.redirect("/users");
+  }
+
+ 
     var values=[ // Read input from post form
   regUsername = req.body.username,
   regPassword = req.body.password,
@@ -134,14 +148,7 @@ app.post("/register", function(req, res, done){
   regUserTypeID = '1'
   ]
 
-  if(regUsername || !regPassword || !regFullName || !regEmail) { return done(null, false, req.flash('message','All fields are required.')); } // If username + password fields null, then throw err.
-  
-  check('regUsername', 'Username is required').not().isEmpty()
-  check('regPassword', 'Your password must be at least 5 characters.').not().isEmpty().isLength({min: 5})
-  check('regFullName').not().isEmpty()
-  check('email', 'Please enter a valid email.').not().isEmpty().isEmail().normalizeEmail()
-
-  
+   
 
   var verifyURL = `https://www.google.com/recaptcha/api/siteverify?secret=6Lc109oUAAAAAB-HVAvXZ5bKnfRwbhm2AbjgyNcQ}&response=${captcha}&remoteip=${req.connection.remoteAddress}`;
   var captcha = req.body['g-recaptcha-response'];

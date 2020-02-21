@@ -20,10 +20,12 @@ block content
             div(id="html_element" data-sitekey="6Lc109oUAAAAAMgt5gCc7vr1R0yfwi5UuWsmco9n" data-callback="verifyCaptcha")
             div(id="g-recaptcha-error")
             |
-            button.btn.btn-lg.btn-primary.btn-block(type='submit') Register
+            button.btn.btn-lg.btn-primary.btn-block(type='submit' id="signinbtn") Register
             |
             - if(message){
             p(style='color:red' text-align='centre') #{message}
             - }
+
+            
 
           <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer> </script>
