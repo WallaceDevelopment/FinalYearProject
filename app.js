@@ -75,7 +75,6 @@ passport.use('local', new LocalStrategy({
           console.log(err);
         if (err) return done(req.flash('message',err));
 
-        
         if(!rows.length){ return done(null, false, req.flash('message','Invalid username or password.')); } // Identify if username exists
         
         salt = salt+''+password;      // Concatenate salt and password
@@ -150,8 +149,6 @@ app.post("/register", [
   regUserTypeID = '1'
   ]
 
-   
-
   var verifyURL = `https://www.google.com/recaptcha/api/siteverify?secret=6Lc109oUAAAAAB-HVAvXZ5bKnfRwbhm2AbjgyNcQ}&response=${captcha}&remoteip=${req.connection.remoteAddress}`;
   var captcha = req.body['g-recaptcha-response'];
   if(!captcha){
@@ -163,17 +160,6 @@ app.post("/register", [
   console.log("*** User has submitted the password: "+ regPassword+ " ***")
   console.log("*** User has submitted the fullname: "+ regFullName + " ***")
   
-  //connection.query(usernameSql, function (err, rows){
-  //  if (err) throw err;
-   // var dbRegUsername  = rows[0].regUsername;
-   // var usernameSql = "SELECT * FROM tbl_users WHERE username = ('"+dbRegUsername+"')"
-   // if(rows.length){ console.log("username already exists")}
-   // console.log("Username already exists")
-    
-  
-
-    // password is hashed using the crypto module
-
   var regSalt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6'; //ensure that this is in the environment for the future
   regSalt = regSalt+''+regPassword;
   var encRegPassword = crypto.createHash('sha1').update(regSalt).digest('hex');
@@ -231,8 +217,6 @@ app.post("/change-unauth-password", function(req, res, done){
     unauthPassSalt = unauthPassSalt+''+newPass;
     var encNewPass = crypto.createHash('sha1').update(unauthPassSalt).digest('hex');
     console.log("\n *** The New Encoded password is: "+encNewPass + " ***")
-  
-   
   
     console.log("\n *** Changing password for user: " + newUser + " *** \r" )
   

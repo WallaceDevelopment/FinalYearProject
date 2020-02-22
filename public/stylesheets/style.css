@@ -83,5 +83,9 @@ padding-bottom: 5px;
   display: none;
 }
 
-
+.footer{
+  text-align:center;
+  position: relative;
+  padding-top: 200px;
+}
 
