@@ -8,8 +8,9 @@ block content
           margin: 10px;
         }
       .wrapper
-           form.form-signin(method='', action='')
-             h3.form-signin-heading Welcome: #{full_name}
+
+           form.form-signin(method='', action='/dashboard')
+             h4.form-signin-heading.text-nowrap Welcome Back, #{full_name}     
              table
                 tr
                     th Username
@@ -19,7 +20,13 @@ block content
                     td  #{username}
                     td  #{full_name}
                     td  #{email}
-           form.form-signin(method='post', action='/change-auth-password')
-            input.form-control(type='password', name='passwordchange', placeholder='Change Password' required)
-            label.checkbox
-            button.btn.btn-lg.btn-primary.btn-block(type='submit') Change Password
+
+           form.form-signin(method='', action='')
+             a(href="/dashboard" type="button" class="btn btn-default btn-block") Open Dashboard
+             button(id="showPasswordform" onClick="onClickClose();" type="button" class="btn btn-default btn-block") Change Password
+
+           form.form-signin(id="formAuthPassword" method='post', action='/change-auth-password')
+             input.form-control(type='password', name='passwordchange', placeholder='New Password' required)
+             button.btn.btn-lg.btn-primary.btn-block(type='submit') Submit
+
+

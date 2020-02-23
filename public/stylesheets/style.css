@@ -58,6 +58,13 @@ body {
   margin-top: 100px;
 }
 
+
+/* This hides the password form on the User Page. */
+#formAuthPassword {
+  display: none;
+}
+
+
 .error{
   color: red;
   display:none;
@@ -109,3 +116,5 @@ p.footer-auth{
   text-align: center;
   bottom:0;
 }
+
+
