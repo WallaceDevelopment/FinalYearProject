@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  $("#showPasswordform").click(function() {
+  $("#showPasswordForm").click(function() {
     $("#formAuthPassword").toggle();
   });
 });

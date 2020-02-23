@@ -235,23 +235,6 @@ app.post("/change-unauth-password", function(req, res, done){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // When logging out, this code will 'destroy' the session and redirect the user to the /signin page.
 app.get('/logout', function(req, res){
     req.session.destroy();

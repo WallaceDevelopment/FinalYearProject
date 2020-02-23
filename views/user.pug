@@ -15,7 +15,7 @@ block content
                 tr
                     th Username
                     th Full Name
-                    th Email
+                    th.center Email
                 tr
                     td  #{username}
                     td  #{full_name}
@@ -23,7 +23,7 @@ block content
 
            form.form-signin(method='', action='')
              a(href="/dashboard" type="button" class="btn btn-default btn-block") Open Dashboard
-             button(id="showPasswordform" onClick="onClickClose();" type="button" class="btn btn-default btn-block") Change Password
+             button(id="showPasswordForm" type="button" class="btn btn-default btn-block") Change Password
 
            form.form-signin(id="formAuthPassword" method='post', action='/change-auth-password')
              input.form-control(type='password', name='passwordchange', placeholder='New Password' required)

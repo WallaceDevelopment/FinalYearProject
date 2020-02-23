@@ -2,7 +2,7 @@ extends ../layout
 block content
       .wrapper
         form.form-signin(method='post', action='/signin')
-          h3.form-signin-heading Login to Dashboard
+          h3.form-signin-heading.text-nowrap Login to Dashboard
           |
           //- This displays a notification box in /index when a #message alert is produced by app.js, 
           - if(message !=''){
