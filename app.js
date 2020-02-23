@@ -13,6 +13,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var register = require('./routes/register'); 
 var changepassword = require ('./routes/changepassword');
+var accessibility = require ('./routes/accessibility');
 
 // 'app' is used in place of express for readability
 var app = express();
@@ -57,6 +58,7 @@ app.use('/', index);              // The '/' directory will display the index pa
 app.use('/users', users);         // The /users directory will display the users page
 app.use('/register', register);   // The /register directory will display the register page
 app.use('/changepassword', changepassword);
+app.use('/accessibility', accessibility);
 
 // passport strategy -- the express session middleware before calling passport.session()
 passport.use('local', new LocalStrategy({
