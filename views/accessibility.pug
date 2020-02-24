@@ -1,11 +1,28 @@
 extends layout
 block content
-      .wrapper
-        h1.text-center Add accordian : Accessibility
-        h2 .
-        h2 .
-        h2.text-center Link below all links to BBC website for accessibility, do the same here
-        h2
-        h2.text-center https://www.london.gov.uk/what-we-do/accessibility 
+    .wrapper
+        div(class="list-group")
+            h3.form-signin-heading(id="list-group-heading") Accessibility
+            label.checkbox
+
+            label.checkbox
+
+            a(id="accessibilitylist" href="https://www.bbc.co.uk/accessibility/guides/change_colours/" class="list-group-item list-group-item-action") Change Text and Background Colours
+            a(id="accessibilitylist" href="https://www.bbc.co.uk/accessibility/guides/change_fonts/" class="list-group-item list-group-item-action") How to change fonts
+            a(id="accessibilitylist" href="https://www.bbc.co.uk/accessibility/guides/magnify" class="list-group-item list-group-item-action") How to magnify the screen
+            a(id="accessibilitylist" href="https://www.bbc.co.uk/accessibility/guides/text_larger/" class="list-group-item list-group-item-action") How to make text larger
+            a(id="accessibilitylist" href="https://www.bbc.co.uk/accessibility/guides/mouse_pointer/" class="list-group-item list-group-item-action") Make the mouse pointer more visible
+            a(id="accessibilitylist" href="https://www.bbc.co.uk/accessibility/guides/speak_text/" class="list-group-item list-group-item-action") Make your Computer speak text aloud
+            a(id="accessibilitylist" href="https://www.bbc.co.uk/accessibility/guides/keyboard_easier/" class="list-group-item list-group-item-action") Make your keyboard easier to use
+            a(id="accessibilitylist" href="https://www.bbc.co.uk/accessibility/guides/alternative_devices/" class="list-group-item list-group-item-action") Information on alternatives to keyboard and mouse
+
+
+            label.checkbox
+
+            p(id="accessibilityDesc" class="text-muted") London Assembly and GOV.UK both use the BBC's accessibility pages. The BBC provides descriptive accessibility pages to improve the user experience. Some links are included above.
+       
+            
+
+
 
 
