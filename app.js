@@ -14,6 +14,7 @@ var users = require('./routes/users');
 var register = require('./routes/register'); 
 var changepassword = require ('./routes/changepassword');
 var accessibility = require ('./routes/accessibility');
+var dashboard = require('./routes/dashboard');
 
 // 'app' is used in place of express for readability
 var app = express();
@@ -59,6 +60,7 @@ app.use('/users', users);         // The /users directory will display the users
 app.use('/register', register);   // The /register directory will display the register page
 app.use('/changepassword', changepassword);
 app.use('/accessibility', accessibility);
+app.use('/dashboard', dashboard);
 
 // passport strategy -- the express session middleware before calling passport.session()
 passport.use('local', new LocalStrategy({
