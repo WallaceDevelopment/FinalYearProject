@@ -126,44 +126,71 @@ app.post("/signin", passport.authenticate('local', {
     res.render('login/index',{'message' :req.flash('message')});
 });
 
-// Register Form Initial POST
-
+// Register Form POST Handling
+// Input from the user is checked here for validation. All Fields are trimmed and 'escaped' for database security.
 app.post("/register", [
-  check('username').not().isEmpty(),
-  check('password').not().isEmpty().isLength({min: 5}).withMessage('Password must have a minimum of 5 characters.'),
-  check('fullname').not().isEmpty(),
-  check('email').not().isEmpty().isEmail().normalizeEmail().withMessage('Please enter a valid email.')
+  check('username', 'Please enter a valid username').not().isEmpty().trim().escape(),
+  check('fullname', 'Name must be over five characters long.').not().isEmpty().isLength({min: 5}).trim().escape(),
+  check('email', 'Please enter a valid email address.').not().isEmpty().isEmail().normalizeEmail().trim().escape(),
+  check('password','Password must have a minimum of 5 characters').not().isEmpty().isLength({min: 5}).trim().escape(),
+  //check('confirmPassword', 'Passwords must match').equals('password')
+], function(req, res){
 
-], function(req, res, done){
+    const errors = validationResult(req);
+    console.log(req.body);
 
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    console.log(errors)
-    req.flash('message', 'Recaptcha validation failure. Please try again.')
-    return res.redirect("/users");
-  }
+    if (!errors.isEmpty()) {
+      console.log('Validation Errors');
+      console.log('');
+      console.log(errors)
+      console.log('')
 
- 
-    var values=[ // Read input from post form
+      var valErrors = (JSON.stringify(errors)); // JSON is stringified here
+      var parsed = JSON.parse(valErrors) // Stringified JSON is parsed here
+
+      displayPassErr = (parsed.errors[0].msg) // .msg locates the msg attribute in the JSON String.
+      console.log(displayPassErr.includes(substring)); // Prints to console to see if the string 'must match' is found in the JSON Response.
+      var substring = 'match';
+      console.log('')
+      console.log(parsed.errors[0].msg) // Test parsed JSON String
+
+      if(displayPassErr.includes(substring)) { // Check to see if the stringified JSON response contains the substring 'must match', the 'Passwords must match' error will be extracted this way.
+        req.flash('message', displayPassErr) // Display the password error
+        return res.redirect("/signin"); // Redirect user to the signin page
+      }
+
+
+      var printout = 'Name and Password must exceed five characters.'
+      console.log('')      
+      console.log('Stringified JSON printout: ' + valErrors); // Prints out stringified JSON
+      console.log('')
+      console.log('Errors Found: ' + displayPassErr)
+      console.log('')
+      req.flash('message', printout)
+      return res.redirect("/signin");
+    }
+
+  // Read input from post form
   regUsername = req.body.username,
   regPassword = req.body.password,
   regFullName = req.body.fullname,
   regEmail = req.body.email,
   regUserTypeID = '1'
-  ]
 
+/* 
   var verifyURL = `https://www.google.com/recaptcha/api/siteverify?secret=6Lc109oUAAAAAB-HVAvXZ5bKnfRwbhm2AbjgyNcQ}&response=${captcha}&remoteip=${req.connection.remoteAddress}`;
   var captcha = req.body['g-recaptcha-response'];
   if(!captcha){
   req.flash('message', 'Recaptcha validation failure. Please try again.')
   return res.redirect("/users");
 }
-  
+*/
+
   console.log("*** User has submitted the username: "+ regUsername + " ***")  // the console log at this point shows that the form has been parsed correctly with body-parser.
   console.log("*** User has submitted the password: "+ regPassword+ " ***")
   console.log("*** User has submitted the fullname: "+ regFullName + " ***")
   
-  var regSalt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6'; //ensure that this is in the environment for the future
+  var regSalt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6'; //Salt will be kept as environmental variable in the future.
   regSalt = regSalt+''+regPassword;
   var encRegPassword = crypto.createHash('sha1').update(regSalt).digest('hex');
   console.log("*** The Encoded password is: "+encRegPassword + " ***")
@@ -173,8 +200,10 @@ app.post("/register", [
     var sql = "INSERT INTO tbl_users_test (username, password, full_name, email, userTypeID) VALUES ('"+regUsername+"', '"+encRegPassword+"', '"+regFullName+"', '"+regEmail+"', '"+regUserTypeID+"')"
     connection.query(sql, function (err, result) { //values inserted into the query
       if (err) throw err;
-      req.flash('message', 'Registration successful! Log in to continue.')
+      req.flash('message', 'Registration successful!' + '\n' + ' Please login and enter the code found on the e-mail to continue.')
+      console.log('')
       console.log("*** Success! | 1 record inserted ***"); // logs a success of the operation in the console.
+      console.log('')
       res.writeHead(302,{Location: '/users'}); // redirects the user after successul registration
       res.end()
     })
