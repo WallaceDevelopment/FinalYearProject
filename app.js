@@ -133,8 +133,15 @@ app.post("/register", [
   check('fullname', 'Name must be over five characters long.').not().isEmpty().isLength({min: 5}).trim().escape(),
   check('email', 'Please enter a valid email address.').not().isEmpty().isEmail().normalizeEmail().trim().escape(),
   check('password','Password must have a minimum of 5 characters').not().isEmpty().isLength({min: 5}).trim().escape(),
+  check('confirmPassword', 'Passwords do not match').not().isEmpty().custom((value, {req, res}) => {
+    if (value !== req.body.password) {
+      return false
+    } else {
+      return value;
+    }
+  }
   //check('confirmPassword', 'Passwords must match').equals('password')
-], function(req, res){
+  )], function(req, res){
 
     const errors = validationResult(req);
     console.log(req.body);
@@ -147,17 +154,29 @@ app.post("/register", [
 
       var valErrors = (JSON.stringify(errors)); // JSON is stringified here
       var parsed = JSON.parse(valErrors) // Stringified JSON is parsed here
-
+      var substring = 'match';
       displayPassErr = (parsed.errors[0].msg) // .msg locates the msg attribute in the JSON String.
       console.log(displayPassErr.includes(substring)); // Prints to console to see if the string 'must match' is found in the JSON Response.
-      var substring = 'match';
+
       console.log('')
       console.log(parsed.errors[0].msg) // Test parsed JSON String
 
+      console.log(req.body.confirmPassword)
+      
+      /*
+
+      if (req.body.password !== req.body.confirmPassword) {
+        console.log('Passwords do not match IF STATEMENT')
+        req.flash('message', 'Passwords must match')
+        return res.redirect("/signin");
+      }
+      */
+     
       if(displayPassErr.includes(substring)) { // Check to see if the stringified JSON response contains the substring 'must match', the 'Passwords must match' error will be extracted this way.
         req.flash('message', displayPassErr) // Display the password error
         return res.redirect("/signin"); // Redirect user to the signin page
       }
+
 
 
       var printout = 'Name and Password must exceed five characters.'
