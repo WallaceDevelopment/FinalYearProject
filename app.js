@@ -165,13 +165,15 @@ app.post("/register", [
       
       /*
 
+      // Block statement confirmPassword validation check using req.body. Used in previous iteration.
+
       if (req.body.password !== req.body.confirmPassword) {
         console.log('Passwords do not match IF STATEMENT')
         req.flash('message', 'Passwords must match')
         return res.redirect("/signin");
       }
       */
-     
+
       if(displayPassErr.includes(substring)) { // Check to see if the stringified JSON response contains the substring 'must match', the 'Passwords must match' error will be extracted this way.
         req.flash('message', displayPassErr) // Display the password error
         return res.redirect("/signin"); // Redirect user to the signin page
