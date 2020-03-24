@@ -135,15 +135,20 @@ app.post("/register", [
   check('username', 'Please enter a valid username').not().isEmpty().trim().custom(async username => {
     const value = await isUsernameInUse(username);
     if (value != 0) {
-        req.flash('message', 'Count is ' + value)
+        req.flash('message', 'Username count is ' + value)
     } 
   }),
   check('fullname', 'Name must be over five characters long.').not().isEmpty().isLength({ min: 5 }).trim().escape(),
-  check('email', 'Please enter a valid email address.').not().isEmpty().isEmail().normalizeEmail().trim().escape(),
+  check('email', 'Please enter a valid email address.').not().isEmpty().isEmail().normalizeEmail().trim().escape().custom(async email => {
+    const evalue = await isEmailInUse(email)
+    if (evalue != 0) {
+      done();
+    }
+  }),
   check('password', 'Password must have a minimum of 5 characters').not().isEmpty().isLength({ min: 5 }).trim().escape(),
   check('confirmPassword', 'Passwords do not match').not().isEmpty().custom((value, {req}) => {
     if (value !== req.body.password) {
-      return false
+      return false;
     } else {
       return value;
     }
@@ -168,22 +173,30 @@ app.post("/register", [
 
       var valErrors = (JSON.stringify(errors)); // JSON is stringified here
       var parsed = JSON.parse(valErrors) // Stringified JSON is parsed here
-      var substring = 'match';
-      var usrSubString = 'req';
+
       displayPassErr = (parsed.errors[0].msg) // .msg locates the msg attribute in the JSON String.
       console.log(displayPassErr.includes(substring)); // Prints to console to see if the string 'must match' is found in the JSON Response.
-
       console.log('')
       console.log(parsed.errors[0].msg) // Test parsed JSON String
       console.log(req.body.confirmPassword)
 
-      if (displayPassErr.includes(substring)) { // Check to see if the stringified JSON response contains the substring 'must match', the 'Passwords must match' error will be extracted this way.
-        req.flash('message', displayPassErr) // Display the password error
-        return res.redirect("/signin"); // Redirect user to the signin page
+      // Check to see if the stringified JSON response contains the substring variable 'subString'.
+      var substring = 'match';
+      if (displayPassErr.includes(substring)) { 
+        req.flash('message', displayPassErr) 
+        return res.redirect("/signin"); 
       }
 
+      // Check if the stringified JSON response contains the substring variable 'usrSubString'.
+      var usrSubString = 'req';
       if (displayPassErr.includes(usrSubString)) {
         req.flash('message', 'Username already exists. Please choose another.')
+        return res.redirect("/signin");
+      }
+
+      var emailSubString = 'done';
+      if (displayPassErr.includes(emailSubString)) {
+        req.flash('message', 'Email Address is already in use')
         return res.redirect("/signin");
       }
 
@@ -315,6 +328,7 @@ function isUsernameInUse(username){
   return new Promise((resolve, reject) => {
       connection.query('SELECT COUNT(*) AS total FROM tbl_users_test WHERE username = ?', [username], function (error, results, fields) {
           if(!error){
+              // This can be commented out. Prints the count of results found.
               console.log("USERNAME COUNT : "+results[0].total);
               return resolve(results[0].total > 0);
           } else {
@@ -325,6 +339,21 @@ function isUsernameInUse(username){
   });
 }
 
+// Function is used for checking if an email is currently in use in the database.
+function isEmailInUse(email){
+  return new Promise((resolve, reject) => {
+      connection.query('SELECT COUNT(*) AS total FROM tbl_users_test WHERE email = ?', [email], function (error, results, fields) {
+          if(!error){
+              // This can be commented out. Prints the count of results found.
+              console.log("EMAIL COUNT : "+results[0].total);
+              return resolve(results[0].total > 0);
+          } else {
+              return reject(new Error('Database error!!'));
+          }
+        }
+      );
+  });
+}
 
 
 
