@@ -6,6 +6,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var { check, validationResult } = require('express-validator');
+var nodemailer = require('nodemailer');
+var url = require("url");
 
 // Set routes for html pages - new pages need to be added here to link them with their route files
 var index = require('./routes/index');
@@ -14,6 +16,7 @@ var register = require('./routes/register');
 var changepassword = require('./routes/changepassword');
 var accessibility = require('./routes/accessibility');
 var dashboard = require('./routes/dashboard');
+var verify = require('./routes/verify');
 
 // 'app' is used in place of express for readability
 var app = express();
@@ -60,6 +63,25 @@ app.use('/register', register);   // The /register directory will display the re
 app.use('/changepassword', changepassword);
 app.use('/accessibility', accessibility);
 app.use('/dashboard', dashboard);
+//app.use('/verify', verify)
+
+/*-----------------------SET SMTP TRANSPORT------------------------*/
+
+var smtpTransport = nodemailer.createTransport({
+  service: "Gmail",
+  //secure: true,
+  auth: {
+    user: "leepjwallace@gmail.com",
+    pass: "B564b663177"
+  }
+});
+
+var rand, mailOptions, host, link;
+//rand = Math.floor((Math.random() * 100) + 54);
+/*-------------------/REGISTER VERIFIFCATION-----------------------*/
+
+
+
 
 // passport strategy -- the express session middleware before calling passport.session()
 passport.use('local', new LocalStrategy({
@@ -84,14 +106,28 @@ passport.use('local', new LocalStrategy({
 
     var encPassword = crypto.createHash('sha1').update(salt).digest('hex');   // Create sha1 hash
     var dbPassword = rows[0].password;   // Crawl database to see if password exists
+    var dbIsVerified = rows[0].isVerified;
+    var stringJson = JSON.stringify(rows);
+    console.log(stringJson)
+    console.log("Database Verification BOOLEAN: "+dbIsVerified)
 
-    // If the hashed password is not found in the database, then produce message.
+    // Checks users hashed form password against the hashed password in the database.
     if (!(dbPassword == encPassword)) {
       console.log("\n *** Login Unsuccessful *** \n")
       return done(null, false, req.flash('message', 'Invalid username or password.'));
     }
+
+    // Checks if the 'isVerified' Attribute is set to true.
+    if (dbIsVerified == '0') {
+      console.log("\n *** User has not verified their account *** \n")
+      return done(null, false, req.flash('message', 'Account has not been verified'));
+    }
+
+    
+
     console.log("\n *** Login Successful *** \n")
     req.session.user = rows[0];
+ 
     return done(null, rows[0]);
   });
 }
@@ -155,12 +191,22 @@ app.post("/register", [
   }
   )], function (req, res) {
 
+
+
+
     // Read input from post form
     regUsername = req.body.username,
     regPassword = req.body.password,
     regFullName = req.body.fullname,
     regEmail = req.body.email,
-    regUserTypeID = '1'
+    regUserTypeID = '1',
+    regIsVerified = '0'
+    regVerificationToken = ''
+
+    hashedEmailSalt = "ValidationToken" + '' + regEmail  
+
+    var regVerificationToken = crypto.createHash('sha1').update(hashedEmailSalt).digest('hex'); 
+    console.log("Verification Token for" + regUsername + "is:" + regVerificationToken);
 
     const errors = validationResult(req);
     console.log(req.body);
@@ -223,28 +269,123 @@ app.post("/register", [
     console.log("*** User has submitted the password: " + regPassword + " ***")
     console.log("*** User has submitted the fullname: " + regFullName + " ***")
 
-    var regSalt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6'; //Salt will be kept as environmental variable in the future.
+    var regSalt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6'; //Salt will be kept as environment variable in the future.
     regSalt = regSalt + '' + regPassword;
     var encRegPassword = crypto.createHash('sha1').update(regSalt).digest('hex');
     console.log("*** The Encoded password is: " + encRegPassword + " ***")
 
     // this establishes a connection with the database and inserts the parsed data above into tbl_users with variables.
 
-    var sql = "INSERT INTO tbl_users_test (username, password, full_name, email, userTypeID) VALUES ('" + regUsername + "', '" + encRegPassword + "', '" + regFullName + "', '" + regEmail + "', '" + regUserTypeID + "')"
+    var sql = "INSERT INTO tbl_users_test (username, password, full_name, email, userTypeID, isVerified, verificationToken) VALUES ('" + regUsername + "', '" + encRegPassword + "', '" + regFullName + "', '" + regEmail + "', '" + regUserTypeID + "', '" + regIsVerified + "', '" + regVerificationToken + "')"
     connection.query(sql, function (err, result) { //values inserted into the query
       if (err) throw err;
-      req.flash('message', 'Registration successful!' + '\n' + ' Please login and enter the code found on the e-mail to continue.')
+      // req.flash('message', 'Registration successful!' + '\n' + ' Please login and enter the code found on the e-mail to continue.')
       console.log('')
       console.log("*** Success! | 1 record inserted ***"); // logs a success of the operation in the console.
       console.log('')
-      res.writeHead(302, { Location: '/users' }); // redirects the user after successul registration
-      res.end()
     })
-  });
 
-// Change Password POST Form
+    //var rand, mailOptions, host, link;
+
+    //rand = Math.floor((Math.random() * 100) + 54);
+    //console.log("Random verification number: " + rand);
+    host = req.get('host');
+    link = "http://"+req.get('host')+"/verify?id="+regVerificationToken;
+    contactUsLink = "http://"+req.get('host')+"/contactus";
+    ErrEmailLink = "http://"+req.get('host')+"/removeacc";
+
+    mailOptions = {
+      from: '"Dashboard Application" <leepjwallace@gmail.com>',
+      to: regEmail,
+      subject: "Please verify your Dashboard Application Account",
+      html: "<center>Hello "+ regFullName +",<br><br> Please use the link below to verify your account.<br><br>Account Username:" + regUsername + "<br><br>Account Email:" + regEmail + "<br><br><a href=" + link + ">Click here to verify</a><br><br><br><br>If you have received this email in error, please <a href=" + ErrEmailLink + ">click here</a> so we can remove your email from our records.<br><br><a href=" + contactUsLink + "> Contact Us</a></center>"
+    }
+    // console.log("These are the mailOptions " + mailOptions);
+    smtpTransport.sendMail(mailOptions, function (error, response) {
+      if (error) {
+        console.log("smtpTransport ERROR: " + error);
+        req.flash('message', 'smtpTransport ERROR.')
+        return res.redirect("/signin");
+      } else {
+        console.log("Message sent: " + response.message);
+        req.flash('message', 'Registration Successful! Please check your emails to verify your account.')
+        return res.redirect("/signin");
+      }
+    });
+
+  app.get('/random', function (req, res) {
+    console.log(req.protocol + ":/" + req.get('host'));
+    if ((req.protocol + "://" + req.get('host')) == ("http://" + host)) {
+      console.log("Domain is matched. Information is from Authentic email");
+      if (req.query.id == rand) {
+        console.log("email is verified");
+        res.end("")
+      }
+      else {
+        console.log("email is not verified");
+        res.end("");
+      }
+    }
+  })
+});
+
+// This function is used to check the '?id=' query against the /verify link.
+// Verifies a user through their registration link recieved on an email.
+
+app.get('/verify', function(req,res) {
+  var queryParameter = req.query.id;
+  //res.json(queryParameter);
+  console.log("/Verify Callback Query = " + req.query)
+  console.log('')
+  console.log("/Verify Callback Query ID = " + req.query.id)
+  
+  
+  connection.query("SELECT * FROM tbl_users_test WHERE verificationToken = ?", [queryParameter], function (err, rows){
+    if (err){
+      req.flash('message', err);
+      return res.redirect('/signin');
+    } 
+
+    // If token does not exist in the database, redirect user to the signin page.
+    if (!rows.length) {
+      return res.redirect('/signin');
+    }
+
+    // If user is already verified, return message to notify the user and redirect to signin page.
+    verifyUser = rows[0].username 
+    if (rows[0].isVerified == 1) {
+      req.flash('message', 'Account Username: "' + verifyUser + '" is already verified. Please login to contiue');
+      return res.redirect('/signin');
+    }
+
+    // If token is found in the database, update the isVerified field to 1, this allows the user to logon.
+    connection.query("UPDATE tbl_users_test SET isVerified = 1 WHERE username = ?", [verifyUser], function (err, rows) {
+      if (err) {
+        req.flash('message', err);
+        return res.redirect('/signin');
+      }
+      console.log('')
+      console.log("*** User successfully verified ***")
+      console.log('')
+      req.flash('message', 'Account Verified!, Please login to continue')
+      return res.redirect('/signin')
+    })
+  })
+});
+
+  
+
+      //else {
+       // req.flash('message', 'Message from an unknown source.') 
+        //return res.redirect("/signin"); 
+      //}
+    //});
+  //});
+
+/*-----------------------------CHANGE AUTHENTICATED USER PASS-------------------------------*/
 
 app.post("/change-auth-password", function (req, res, done) {
+  // Form Validation is needed here
 
   newPass = req.body.passwordchange;
   var newPassSalt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6'; //ensure that this is in the environment for the future
@@ -332,7 +473,7 @@ function isUsernameInUse(username){
               console.log("USERNAME COUNT : "+results[0].total);
               return resolve(results[0].total > 0);
           } else {
-              return reject(new Error('Database error!!'));
+              return reject(new Error('Database Error'));
           }
         }
       );
@@ -348,7 +489,7 @@ function isEmailInUse(email){
               console.log("EMAIL COUNT : "+results[0].total);
               return resolve(results[0].total > 0);
           } else {
-              return reject(new Error('Database error!!'));
+              return reject(new Error('Database Error'));
           }
         }
       );
