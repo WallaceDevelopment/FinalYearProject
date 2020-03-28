@@ -10,16 +10,19 @@ block content
       .wrapper
 
            form.form-signin(method='', action='/dashboard')
-             h4.form-signin-heading.text-nowrap Welcome Back, #{full_name}     
+             h4.form-signin-heading.text-wrap Welcome Back, #{full_name}     
              table
                 tr
-                    th Username
-                    th Full Name
-                    th.center Email
+                    th #[center Username]
+                    th #[center Full Name]
+                    th #[center Email]
                 tr
-                    td  #{username}
-                    td  #{full_name}
-                    td  #{email}
+                    td  #[center #{username}]
+                    td  #[center #{full_name}]
+                    td  #[center #{email}]
+             
+             label.checkbox
+             p #[justify You have logged in successfully! Please use the links below to access the Dashboard or change your password.]
 
            form.form-signin(method='', action='')
              a(href="/dashboard" type="button" class="btn btn-default btn-block") Open Dashboard
@@ -27,6 +30,7 @@ block content
 
            form.form-signin(id="formAuthPassword" method='post', action='/change-auth-password')
              input.form-control(type='password', name='passwordchange', placeholder='New Password' required)
+             input.form-control(type='password', name='confirmPasswordChange' placeholder='Confirm New Password' required)
              button.btn.btn-lg.btn-primary.btn-block(type='submit') Submit
 
 

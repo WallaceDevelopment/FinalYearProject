@@ -17,6 +17,7 @@ var changepassword = require('./routes/changepassword');
 var accessibility = require('./routes/accessibility');
 var dashboard = require('./routes/dashboard');
 var verify = require('./routes/verify');
+var contactus = require('./routes/contactus');
 
 // 'app' is used in place of express for readability
 var app = express();
@@ -63,6 +64,7 @@ app.use('/register', register);   // The /register directory will display the re
 app.use('/changepassword', changepassword);
 app.use('/accessibility', accessibility);
 app.use('/dashboard', dashboard);
+app.use('/contactus', contactus);
 //app.use('/verify', verify)
 
 /*-----------------------SET SMTP TRANSPORT------------------------*/
@@ -203,9 +205,9 @@ app.post("/register", [
     regIsVerified = '0'
     regVerificationToken = ''
 
-    hashedEmailSalt = "ValidationToken" + '' + regEmail  
-
-    var regVerificationToken = crypto.createHash('sha1').update(hashedEmailSalt).digest('hex'); 
+    // Username is appended with the "ValidationToken" String for a hashed token. Good as it uses a unique value everytime.
+    hashedUsernameSalt = "ValidationToken" + '' + regUsername  
+    var regVerificationToken = crypto.createHash('sha1').update(hashedUsernameSalt).digest('hex'); 
     console.log("Verification Token for" + regUsername + "is:" + regVerificationToken);
 
     const errors = validationResult(req);
@@ -298,7 +300,7 @@ app.post("/register", [
       from: '"Dashboard Application" <leepjwallace@gmail.com>',
       to: regEmail,
       subject: "Please verify your Dashboard Application Account",
-      html: "<center>Hello "+ regFullName +",<br><br> Please use the link below to verify your account.<br><br>Account Username:" + regUsername + "<br><br>Account Email:" + regEmail + "<br><br><a href=" + link + ">Click here to verify</a><br><br><br><br>If you have received this email in error, please <a href=" + ErrEmailLink + ">click here</a> so we can remove your email from our records.<br><br><a href=" + contactUsLink + "> Contact Us</a></center>"
+      html: "<center>Hello "+ regFullName +",<br><br> Please use the link below to verify your account.<br><br>Account Username: " + regUsername + "<br><br>Account Email: " + regEmail + "<br><br><a href=" + link + ">Click here to verify</a><br><br><br><br>If you have received this email in error, please <a href=" + ErrEmailLink + ">click here</a> so we can remove your email from our records.<br><br><a href=" + contactUsLink + "> Contact Us</a></center>"
     }
     // console.log("These are the mailOptions " + mailOptions);
     smtpTransport.sendMail(mailOptions, function (error, response) {
@@ -373,14 +375,6 @@ app.get('/verify', function(req,res) {
   })
 });
 
-  
-
-      //else {
-       // req.flash('message', 'Message from an unknown source.') 
-        //return res.redirect("/signin"); 
-      //}
-    //});
-  //});
 
 /*-----------------------------CHANGE AUTHENTICATED USER PASS-------------------------------*/
 
@@ -410,10 +404,127 @@ app.post("/change-auth-password", function (req, res, done) {
 
 });
 
-// Same code as the post form 'changepass' but for an unauthenticated user
+
+
+
+app.get("/passchange", function(req, res) {
+
+  var passQueryParameter = req.query.id;
+
+  console.log("/passchange query ID =" + passQueryParameter)
+  
+  connection.query("SELECT * FROM tbl_users_test WHERE passwordResetToken = ?", [passQueryParameter], function (err, rows){
+    if (err){
+      req.flash('message', err);
+      return res.redirect('/signin');
+    } 
+
+    // If password reset token does not exist in the database, redirect user to the signin page.
+    if (!rows.length) {
+      return res.redirect('/signin');
+    }
+
+    passChangeUser = rows[0].username 
+    passChangeUserEmail = rows[0].email
+    randomPassChangeNo = Math.floor((Math.random() * 100) + 54);
+    console.log("Random verification number: " + randomPassChangeNo);
+  
+    newPasswordSalt = randomPassChangeNo + '' + passChangeUser
+    var newPassword = crypto.createHash('sha1').update(newPasswordSalt).digest('hex');
+
+    console.log(newPassword);
+    console.log("New Password: "+ newPasswordSalt) // This is the new password that should be sent to the user.
+
+    var PasswordChangeSalt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6';
+    salt = PasswordChangeSalt + '' + newPasswordSalt
+    var newPass = crypto.createHash('sha1').update(salt).digest('hex'); 
+
+    connection.query("UPDATE tbl_users_test SET password = ? WHERE username = ?", [newPass, passChangeUser], function (err, rows) {
+      if (err) {
+        req.flash('message', err);
+        return res.redirect('/signin');
+      }
+      console.log('')
+      console.log("*** User password reset***")
+      console.log('')
+      req.flash('message', 'Password Reset. Please check your emails for your new login.')
+      return res.redirect('/signin')
+    })
+
+    host = req.get('host');
+    contactUsLink = "http://"+req.get('host')+"/contactus";
+    ErrEmailLink = "http://"+req.get('host')+"/removeacc";
+
+    mailOptions = {
+      from: '"Dashboard Application" <leepjwallace@gmail.com>',
+      to: passChangeUserEmail,
+      subject: "New Login Information",
+      html: "<center>Hello "+ passChangeUser +",<br><br> Your password has successfully been reset.<br><br>Please change your password as soon as you login.<br><br><b>New Password: </b>" + newPasswordSalt + "<br><br>If you have received this email in error, please <a href=" + ErrEmailLink + ">click here</a> so we can remove your email from our records or <br><br><a href=" + contactUsLink + "> Contact Us </a> for any further information.</center>"
+    }
+    // console.log("These are the mailOptions " + mailOptions);
+    smtpTransport.sendMail(mailOptions, function (error, response) {
+      if (error) {
+        console.log("smtpTransport ERROR: " + error);
+        req.flash('message', 'smtpTransport ERROR.')
+        return res.redirect("/signin");
+      } else {
+        console.log("Message sent: " + response.message);
+        // req.flash('message', 'Registration Successful! Please check your emails to verify your account.')
+        return res.redirect("/signin");
+      }
+    })
+  })
+})
+
+
 
 app.post("/change-unauth-password", function (req, res, done) {
 
+  passEmail = req.body.email;
+
+  // Salt is a random number appended to the email address. Both are unique values which is excellent for security.
+  randomPassNo = Math.floor((Math.random() * 100) + 54);
+  console.log("Random verification number: " + randomPassNo);
+
+  hashedEmailSalt = randomPassNo + '' + passEmail
+
+  var passVerificationToken = crypto.createHash('sha1').update(hashedEmailSalt).digest('hex'); 
+  console.log(passVerificationToken);
+
+  host = req.get('host');
+  passLink = "http://"+req.get('host')+"/passchange?id="+passVerificationToken;
+  
+  connection.query("UPDATE tbl_users_test SET passwordResetToken = ? WHERE email = ?", [passVerificationToken, passEmail], function(err, rows) {
+    if (err) {
+      req.flash('message', err);
+      return res.redirect('/signin');
+    } 
+    console.log("*** Password RESET where email = " + passEmail + " ***")
+  })
+
+  mailOptions = {
+    from: '"Dashboard Application" <leepjwallace@gmail.com>',
+    to: passEmail,
+    subject: "Password Reset Request",
+    html: "<center>Hello, <br><br> Please use the link below to reset your password<br><br><a href=" + passLink + ">Click Here to reset password</a></center>"
+  }
+  // console.log("These are the mailOptions " + mailOptions);
+  smtpTransport.sendMail(mailOptions, function (error, response) {
+    if (error) {
+      console.log("smtpTransport ERROR: " + error);
+      req.flash('message', 'smtpTransport ERROR.')
+      return res.redirect("/signin");
+    } else {
+      console.log("Message sent: " + response.message);
+      req.flash('message', 'Password reset link sent.')
+      return res.redirect("/signin");
+    }
+  })
+
+  
+
+
+  /*
   newUser = req.body.newPasswordUsername;
   newPass = req.body.newPassword;
 
@@ -434,7 +545,7 @@ app.post("/change-unauth-password", function (req, res, done) {
     res.redirect('/signin');
 
   })
-
+  */
 });
 
 
@@ -497,15 +608,7 @@ function isEmailInUse(email){
 }
 
 
-
-
-
-
-
-
-
 // Testing Google Recaptcha
-
 function verifyCaptcha() {
   document.getElementById('g-recaptcha-error').innerHTML = '';
 }
