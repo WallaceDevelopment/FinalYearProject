@@ -2,6 +2,8 @@
   "name": "nodejs-mysql-login",
   "version": "0.0.0",
   "private": true,
+  "description": "Dashboard Application for Final Year Project, Student No. 000938568",
+  "main": "./bin/www",
   "scripts": {
     "start": "node ./bin/www"
   },
