@@ -7,7 +7,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var { check, validationResult } = require('express-validator');
 var nodemailer = require('nodemailer');
-var url = require("url");
 
 // Set routes for html pages - new pages need to be added here to link them with their route files
 var index = require('./routes/index');
