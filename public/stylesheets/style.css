@@ -2,6 +2,10 @@ body {
   background: #eee !important;
 }
 
+@-ms-viewport{
+  width: device-width;
+  }
+
 .wrapper {
   margin-top: 80px;
   margin-bottom: 80px;

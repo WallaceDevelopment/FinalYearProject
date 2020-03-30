@@ -368,7 +368,7 @@ app.get('/verify', function(req,res) {
       console.log('')
       console.log("*** User successfully verified ***")
       console.log('')
-      req.flash('message', 'Account Verified!, Please login to continue')
+      req.flash('message', 'Account Verified! Please login to continue')
       return res.redirect('/signin')
     })
   })
