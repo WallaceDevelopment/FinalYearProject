@@ -1,18 +1,24 @@
 extends layout
 block content
-    .wrapper
-        div(class="list-group")
-            h3.form-signin-heading(id="list-group-heading") Contact Us
-            label.checkbox
-            p #[center Please send any queries to; ]
-            label.checkbox
-            a(href="mailto:leepjwallace@gmail.com") #[center #[strong leepjwallace@gmail.com]]
-            
-    
+      .wrapper
+        form.form-signin(method='post', action='/contactus')
+          h3.form-signin-heading #[justify ---- Contact Us ----]
+          |
+          .form-group
+            label(for='name') Name
+            input.form-control(type='text', name='name', placeholder='Name' required)
+        
+          .form-
+            label(for='email') Email
+            input.form-control(type='text', name='email', placeholder='example@example.com' required)
+            br
+          .form-group
+            label(for='message') Message
+            textarea.form-control(type='text', rows='8', cols='18', maxlength='200',  name='message', placeholder='Message' required)
+            p(class='text-muted') #[center Please provide your query to a maximum of 200 characters.]
 
-       
-            
-
-
+          |
+          button.btn.btn-lg.btn-primary.btn-block(type='submit') Submit
+          
 
 

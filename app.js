@@ -309,7 +309,7 @@ app.post("/register", [
         return res.redirect("/signin");
       } else {
         console.log("Message sent: " + response.message);
-        req.flash('message', 'Registration Successful! Please check your emails to verify your account.')
+        req.flash('message', 'Registration Successful! Please check your email to verify your account.')
         return res.redirect("/signin");
       }
     });
@@ -329,6 +329,8 @@ app.post("/register", [
     }
   })
 });
+
+/*-----------------------/VERIFY LINK------------------------*/
 
 // This function is used to check the '?id=' query against the /verify link.
 // Verifies a user through their registration link recieved on an email.
@@ -374,6 +376,44 @@ app.get('/verify', function(req,res) {
   })
 });
 
+/*-----------------------CONTACT US FORM HANDLING-----------------------*/
+
+app.post("/contactus", function (req, res, done) {
+
+  // Set variables from req.body
+  var formName = req.body.name;
+  var formEmail = req.body.email;
+  var formMessage = req.body.message;
+
+  // Get the current date and time.
+  var today = new Date();
+  var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
+  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var dateTime = date+' '+time;
+
+  // Contact Us Form Mail Options
+  mailOptions = {
+    from: '"Dashboard Application" <leepjwallace@gmail.com>',
+    to: 'leepjwallace@gmail.com',
+    replyTo: formEmail, // When the administrator replies to the email, they will reply directly to the email address provided in the form. 
+    subject: "Contact Us Form Submitted",
+    html: "<center><h3><u>Contact Us Form</u></h3><h4>Name: </h4>" + formName + " <br><h4>Email: </h4>" + formEmail + "<br><h4>Message:</h4> '" + formMessage + "' <h4>Sent at:</h4> " + dateTime + "</center>"
+  }
+
+  // Handle smtp Transport Error Handling
+  smtpTransport.sendMail(mailOptions, function (error, response) {
+    if (error) {
+      console.log("smtpTransport ERROR: " + error);
+      req.flash('message', 'smtpTransport ERROR.')
+      return res.redirect("/signin");
+    } else {
+      console.log("Message sent: " + response.message);
+      req.flash('message', 'Contact Form Submitted! Please expect a response within 24 hours.')
+      return res.redirect("/signin");
+    }
+  })
+})
+
 
 /*-----------------------------CHANGE AUTHENTICATED USER PASS-------------------------------*/
 
@@ -404,7 +444,7 @@ app.post("/change-auth-password", function (req, res, done) {
 });
 
 
-
+/*-----------------------------CHANGE USER PASS-------------------------------*/
 
 app.get("/passchange", function(req, res) {
 
@@ -475,7 +515,7 @@ app.get("/passchange", function(req, res) {
   })
 })
 
-
+/*-----------------------------CHANGE unAUTHENTICATED USER PASS-------------------------------*/
 
 app.post("/change-unauth-password", function (req, res, done) {
 
@@ -547,7 +587,7 @@ app.post("/change-unauth-password", function (req, res, done) {
   */
 });
 
-
+/*-----------------------------OTHER FUNCTIONS-------------------------------*/
 
 // When logging out, this code will 'destroy' the session and redirect the user to the /signin page.
 app.get('/logout', function (req, res) {

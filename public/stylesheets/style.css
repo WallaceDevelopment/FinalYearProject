@@ -6,6 +6,10 @@ body {
   width: device-width;
   }
 
+textarea {
+  resize: none;
+}
+
 .wrapper {
   margin-top: 80px;
   margin-bottom: 80px;
