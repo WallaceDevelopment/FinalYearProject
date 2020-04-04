@@ -9,25 +9,14 @@ block content
         }
       .wrapper
            form.form-signin(method='', action='/dashboard')
-             h4.form-signin-heading.text-wrap Welcome Back, #{full_name}     
-             table
-                tr
-                    th #[center Username]
-                    th #[center Full Name]
-                    th #[center Email]
-                tr
-                    td  #[center #{username}]
-                    td  #[center #{full_name}]
-                    td  #[center #{email}]
+             h4.form-signin-heading.text-wrap #[justify Administrator, #{full_name}]
              
-             label.checkbox
-             p #[justify You have logged in successfully! Please use the links below to access the Dashboard or change your password.]
+             br
+             p #[center You have successfully accessed this page because your account is set as an Administrator. #[br]#[br] Please note that this page is a #[b work in progress]. You will not be able to access this page as a normal user.]
 
            form.form-signin(method='', action='')
              a(href="/dashboard" type="button" class="btn btn-default btn-block") Open Dashboard
              button(id="showPasswordForm" type="button" class="btn btn-default btn-block") Change Password
-             br
-             a(href="/admin") #[center #[u Administrator Dashboard]]
 
            form.form-signin(id="formAuthPassword" method='post', action='/change-auth-password')
              input.form-control(type='password', name='passwordchange', placeholder='New Password' required)

@@ -1,6 +1,7 @@
 extends ../layout
 block content
       .wrapper
+
         form.form-signin(method='post', action='/signin')
           h3.form-signin-heading.text-wrap #[justify Login to Dashboard ]
           |
@@ -23,6 +24,7 @@ block content
           a(href="/register") #[center #[u Register a New User]]
           br
           a(href="/changepassword") #[center #[u Forgotten Password?]]
+
 
 //-        form.form-signin(method='', action='')
 //-         a(href="/register" type="button" class="btn btn-default btn-block") Register a new user

@@ -17,6 +17,7 @@ var accessibility = require('./routes/accessibility');
 var dashboard = require('./routes/dashboard');
 var verify = require('./routes/verify');
 var contactus = require('./routes/contactus');
+var admin = require('./routes/admin');
 
 // 'app' is used in place of express for readability
 var app = express();
@@ -64,6 +65,7 @@ app.use('/changepassword', changepassword);
 app.use('/accessibility', accessibility);
 app.use('/dashboard', dashboard);
 app.use('/contactus', contactus);
+app.use('/admin', admin);
 //app.use('/verify', verify)
 
 /*-----------------------SET SMTP TRANSPORT------------------------*/
@@ -200,7 +202,7 @@ app.post("/register", [
     regPassword = req.body.password,
     regFullName = req.body.fullname,
     regEmail = req.body.email,
-    regUserTypeID = '1',
+    regUserTypeID = '0',
     regIsVerified = '0'
     regVerificationToken = ''
 
@@ -312,6 +314,7 @@ app.post("/register", [
         req.flash('message', 'Registration Successful! Please check your email to verify your account.')
         return res.redirect("/signin");
       }
+      
     });
 
   app.get('/random', function (req, res) {
