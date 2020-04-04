@@ -632,7 +632,7 @@ app.get('/logout', function (req, res) {
 
 // Catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  var err = new Error('404 Not Found');
+  var err = new Error('404: Page Not Found');
   err.status = 404;
   next(err);
 });

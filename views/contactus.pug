@@ -2,7 +2,7 @@ extends layout
 block content
       .wrapper
         form.form-signin(method='post', action='/contactus')
-          h3.form-signin-heading #[justify ---- Contact Us ----]
+          h3 #[center Contact Us]
           |
           .form-group
             label(for='name') Name
@@ -10,7 +10,7 @@ block content
         
           .form-
             label(for='email') Email
-            input.form-control(type='text', name='email', placeholder='example@example.com' required)
+            input.form-control(type='text', name='email', placeholder='hello@example.com' required)
             br
           .form-group
             label(for='message') Message
