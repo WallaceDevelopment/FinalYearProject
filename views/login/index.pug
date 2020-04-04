@@ -3,7 +3,7 @@ block content
       .wrapper
 
         form.form-signin(method='post', action='/signin')
-          h3.form-signin-heading.text-wrap #[justify Login to Dashboard ]
+          h3 #[center Sign in  ]
           |
           //- This displays a notification box in /index when a #message alert is produced by app.js, 
           - if(message !=''){
@@ -18,7 +18,7 @@ block content
             label(for='password') Password
             input.form-control(type='password', name='password', placeholder='Password' required)
           |
-          button.btn.btn-lg.btn-primary.btn-block(type='submit') Login
+          button.btn.btn-lg.btn-primary.btn-block(type='submit') Submit
           |
           label.checkbox
           a(href="/register") #[center #[u Register a New User]]

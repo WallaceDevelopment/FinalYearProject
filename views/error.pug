@@ -3,7 +3,13 @@ extends layout
 block content
   br
 
-  h1 #[center 👋 Hey! An error has occured here.]
-  h3 Error Status: (#{error.status} #{message})
+  h1 #[center 👋 Hey! An error has occured here]
+  br
+  h2 #[center  #[a(href="/signin") Return to Sign in Page ]]
+
+
+  br
+  h3 #[center Error Status: (#{message})]
+  br
   pre #{error.stack}
 
