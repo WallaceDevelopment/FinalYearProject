@@ -9,18 +9,40 @@ block content
         }
       .wrapper
            form.form-signin(method='', action='/dashboard')
-             h4.form-signin-heading.text-wrap #[justify Administrator, #{full_name}]
-             
+             h3(id='adminID') #[center #[u Administrator Functions]]
+           //- This POST form allows an Administrator to modify an existing user.
+           form.form-signin(method='post', action='/modifyUser')
+             h4 #[center Exisitng User Check]
              br
-             p #[center You have successfully accessed this page because your account is set as an Administrator. #[br]#[br] Please note that this page is a #[b work in progress]. You will not be able to access this page as a normal user.]
+             input.form-control(type='text', name='selectUser', placeholder='Existing User' maxlength='30' required)
+             br
+             - if(message !=''){
+             
+             p(style="visibility:show" id="adminSelectErr") #{message}
+
+             - }
+
+             - if(success !=''){
+             
+             p(style="visibility:show" id="adminSelectSuc") #{success}
+
+             - }
+
+             br
+             button.btn.btn-lg.btn-primary.btn-block(type='submit' id="adminUserSubmit") Submit
 
            form.form-signin(method='', action='')
-             a(href="/dashboard" type="button" class="btn btn-default btn-block") Open Dashboard
-             button(id="showPasswordForm" type="button" class="btn btn-default btn-block") Change Password
+             button(href="/resetUserPass" type="button" class="btn btn-default btn-block") Reset Users Password
+             button(id="showPasswordForm" type="button" class="btn btn-default btn-block") Change User's Username
+             button(id="showPasswordForm" type="button" class="btn btn-default btn-block") Change User's Email
+             button(id="showPasswordForm" type="button" class="btn btn-default btn-block") Delete User
 
-           form.form-signin(id="formAuthPassword" method='post', action='/change-auth-password')
-             input.form-control(type='password', name='passwordchange', placeholder='New Password' required)
-             input.form-control(type='password', name='confirmPasswordChange' placeholder='Confirm New Password' required)
-             button.btn.btn-lg.btn-primary.btn-block(type='submit') Submit
+
+             br
+        
+
+
+
+
 
 

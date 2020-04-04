@@ -58,6 +58,12 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(function(req, res, next){
+  res.locals.success_messages = req.flash('success_messages');
+  res.locals.error_messages = req.flash('error_messages');
+  next();
+});
+
 app.use('/', index);              // The '/' directory will display the index page
 app.use('/users', users);         // The /users directory will display the users page
 app.use('/register', register);   // The /register directory will display the register page
@@ -518,7 +524,32 @@ app.get("/passchange", function(req, res) {
   })
 })
 
-/*-----------------------------CHANGE unAUTHENTICATED USER PASS-------------------------------*/
+var adminSelectUser;
+app.post("/modifyUser", function (req, res) {
+
+  user = req.body.selectUser
+  adminSelectUser = user;
+
+  connection.query("SELECT * FROM tbl_users_test WHERE username = ?", [user], function (err, rows) {
+    if (err) {
+      req.flash('message', 'Database Error' + err)
+      return res.redirect('/signin')
+    }
+    if (!rows.length) {
+      req.flash('message', '*** Failure:  User "' + user + '" Not Found ***')
+      return res.render('admin', { message: req.flash('message') });
+    }
+
+    // Success Message rendered to admin page.
+    req.flash('success', '*** Success: User "' + user + '" Found ***')
+    return res.render('admin', {success: req.flash('success') });
+    console.log("*** SELECTED USER ***")
+  })
+})
+
+
+
+/*-----------------------------CHANGE UNAUTHENTICATED USER PASS-------------------------------*/
 
 app.post("/change-unauth-password", function (req, res, done) {
 

@@ -72,7 +72,6 @@ textarea {
   display: none;
 }
 
-
 .error{
   color: red;
   display:none;
@@ -158,11 +157,21 @@ p.footer-auth{
   position: relative;
 }
 
-#spinner {
-   display:none; 
-} 
-
-body.busy .spinner { 
-  display:block !important; 
+#adminSelectErr {
+  visibility:none;
+  text-align: center;
+  color: red;
 }
+
+#adminSelectSuc {
+  visibility: none;
+  text-align: center;
+  color: green;
+}
+
+#adminSelectErrBlock {
+  display: none;
+}
+
+
 
