@@ -2,14 +2,14 @@ extends layout-auth
 block content
       .wrapper
            form.form-signin(method='', action='')
-             h3(id='adminID') #[center #[u Reset User Password]]
+             h3(id='adminID') #[center #[u Change User Username]]
 
              br
              - if(message !=null){
              
              div(class='alert alert-danger' text-align='centre' style='display:block') #{message}
               br
-              a(href="/admin") #[center Return to Administrator Settings]]
+              a(href="/admin") #[center Return to Administrator Settings]
 
              - }
 
@@ -19,14 +19,15 @@ block content
              div(class='alert alert-success' text-align='centre' style='display:block') #{success}
               br
               a(href="/admin") #[center Return to Administrator Settings]
-                       
-             - }
-           
 
-           form.form-signin(method='post', action='/admin-reset-password')
-             input.form-control(type='text', name='selectResetUser', placeholder='Existing User', maxlength='30' required)
+             - }
+
+           form.form-signin(method='post', action='/admin-change-username')
+             input.form-control(type='text', name='selectChangeUsername', placeholder='Existing User', maxlength='30' required)
              br
-             button.btn.btn-lg.btn-primary.btn-block(type='submit' id="selectResetUserSubmit") Reset Password
+             input.form-control(type='text', name='selectChangeUsernameNew', placeholder='New Username', maxlength='30' required)
+             br
+             button.btn.btn-lg.btn-primary.btn-block(type='submit' id="selectResetUserSubmit") Change Username
 
         
 

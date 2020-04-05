@@ -10,22 +10,17 @@ router.get('/', isAuthenticated, function(req, res, next) {
   var email = req.session.user.email;
     
   console.log('')
-  console.log('*** Accessed Administrator Dashboard ***')
+  console.log('*** Accessed adminResetUserPass ***')
   console.log('')
-  res.render('admin', { username: username, full_name: full_name, email : email });
+  res.render('adminChangeUsername', { username: username, full_name: full_name, email : email });
 
 });
 
 /*-----------------------isAdmin Handling------------------------*/
 
 function isAuthenticated(req, res, next) {
-
-    var username   = req.session.user.username;
-    var full_name  = req.session.user.full_name;
-    var email = req.session.user.email;
-
     if (!req.session.user) {
-        req.flash('message', 'Administrator is not signed in. Please sign in to continue.')
+        req.flash('message', 'User with administrator privileges is not signed in. Please sign in to continue.')
         return res.redirect('/signin');
     }
     if (req.session.user) {
@@ -37,9 +32,6 @@ function isAuthenticated(req, res, next) {
             console.log('*** Account does not have Administrator privileges ***')
             console.log('*** Redirecting to signin... ***')
             console.log('')
-
-            req.flash('message', '* This account does not have administrator privileges *')
-            return res.render('user', { message: req.flash('message'), username: username, full_name: full_name, email : email });
 
             req.flash('message', 'This account does not have administrator privileges.')
             res.redirect('/signin');

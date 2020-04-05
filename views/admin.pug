@@ -16,12 +16,14 @@ block content
              
              div(class='alert alert-danger' text-align='centre' style='display:block') #{message}
 
+
              - }
 
              - if(success !=null){
              
              //- p(style="visibility:show" id="adminSelectSuc") #{success}
              div(class='alert alert-success' text-align='centre' style='display:block') #{success}
+
              
              - }
 
@@ -29,10 +31,7 @@ block content
            //- This POST form allows an Administrator to modify an existing user.
            form.form-signin(method='post', action='/modifyUser')
              h4 #[center Existing User Check]
-
-
-
-
+             br
 
              input.form-control(type='text', name='selectUser', placeholder='Existing User' maxlength='30' required)
              br
@@ -40,11 +39,14 @@ block content
              button.btn.btn-lg.btn-primary.btn-block(type='submit' id="adminUserSubmit") Submit
 
            form.form-signin(method='', action='')
-             a(href="/adminResetUserPass" type="button" class="btn btn-default btn-block") Reset Users Password
-             button(id="showPasswordForm" type="button" class="btn btn-default btn-block") Change User's Username
-             button(id="showPasswordForm" type="button" class="btn btn-default btn-block") Change User's Email
-             button(id="showPasswordForm" type="button" class="btn btn-default btn-block") Delete User
+
+             a(href="/adminChangeUsername" type="button" class="btn btn-default btn-block") Change Account Username
+             a(href="/" type="button" class="btn btn-default btn-block") Change Account Name
+             a(href="/adminResetUserPass" type="button" class="btn btn-default btn-block") Reset Account Password
+             a(href="/adminDeleteUser" type="button" class="btn btn-default btn-block") Delete User
              br
+             a(href="/error" type="button" class="btn btn-default btn-block") Upload .CSV File for Database
+             a(href="/users" type="button" class="btn btn-default btn-block") Return to User Page
         
 
 

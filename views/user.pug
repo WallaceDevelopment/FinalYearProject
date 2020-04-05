@@ -24,11 +24,29 @@ block content
              br
              p #[center You have logged in successfully! Please use the links below to access the Dashboard or change your password.]
 
+
+             - if(message !=null){
+             
+             div(class='alert alert-danger' text-align='centre' style='display:block') #{message}
+
+
+
+             - }
+
+             - if(success !=null){
+             
+             //- p(style="visibility:show" id="adminSelectSuc") #{success}
+             div(class='alert alert-success' text-align='centre' style='display:block') #{success}
+
+
+             - }
+
+            
            form.form-signin(method='', action='')
              a(href="/dashboard" type="button" class="btn btn-default btn-block") Open Dashboard
-             button(id="showPasswordForm" type="button" class="btn btn-default btn-block") Change Password
+             a(id="showPasswordForm" type="button" class="btn btn-default btn-block") Change Password
              br
-             a(href="/admin") #[center #[u Administrator Dashboard]]
+             a(href="/admin" type="button" class="btn btn-default btn-block") #[center Administrator Settings]
 
            form.form-signin(id="formAuthPassword" method='post', action='/change-auth-password')
              input.form-control(type='password', name='passwordchange', placeholder='New Password' required)

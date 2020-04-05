@@ -24,7 +24,7 @@ textarea {
 }
 
 .form-signin {
-  max-width: 420px;
+  max-width: 520px;
   padding: 15px 35px 35px;
   margin: 0 auto;
   background-color: #fff;
@@ -182,6 +182,10 @@ p.footer-auth{
 
 #adminSelectErrBlock {
   display: none;
+}
+
+#deleteUserCheckboxLabel {
+  padding-left: 10px;
 }
 
 

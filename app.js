@@ -17,8 +17,12 @@ var accessibility = require('./routes/accessibility');
 var dashboard = require('./routes/dashboard');
 var verify = require('./routes/verify');
 var contactus = require('./routes/contactus');
+
 var admin = require('./routes/admin');
 var adminResetUserPass = require('./routes/adminResetUserPass');
+var adminChangeUsername = require('./routes/adminChangeUsername');
+var adminDeleteUser = require('./routes/adminDeleteUser');
+//var adminChangeFullname = require('./routes/adminChangeFullname');
 
 // 'app' is used in place of express for readability
 var app = express();
@@ -72,8 +76,13 @@ app.use('/changepassword', changepassword);
 app.use('/accessibility', accessibility);
 app.use('/dashboard', dashboard);
 app.use('/contactus', contactus);
+
 app.use('/admin', admin);
 app.use('/adminResetUserPass', adminResetUserPass);
+app.use('/adminChangeUsername', adminChangeUsername);
+app.use('/adminDeleteUser', adminDeleteUser);
+
+//app.use('/adminChangeFullname', adminChangeFullname);
 //app.use('/verify', verify)
 
 /*-----------------------SET SMTP TRANSPORT------------------------*/
@@ -109,7 +118,7 @@ passport.use('local', new LocalStrategy({
 
   connection.query("select * from tbl_users_test where username = ?", [username], function (err, rows) {       // Find username entered by the user.
     console.log(err);
-    if (err) return done(req.flash('message', err));
+    if (err) return done(req.flash('message', 'Database Error'));
 
     if (!rows.length) { return done(null, false, req.flash('message', 'Invalid username or password.')); } // Identify if username exists
 
@@ -247,8 +256,10 @@ app.post("/register", [
       // Check if the stringified JSON response contains the substring variable 'usrSubString'.
       var usrSubString = 'req';
       if (displayPassErr.includes(usrSubString)) {
-        req.flash('message', 'Username already exists. Please choose another.')
-        return res.redirect("/signin");
+
+        req.flash('message', '* Username Already Exists. Please choose another. *')
+        return res.render('register', { message: req.flash('message') });
+
       }
 
       var emailSubString = 'done';
@@ -319,8 +330,10 @@ app.post("/register", [
         return res.redirect("/signin");
       } else {
         console.log("Message sent: " + response.message);
-        req.flash('message', 'Registration Successful! Please check your email to verify your account.')
-        return res.redirect("/signin");
+
+        req.flash('success', '* Registration Successful! Please check your email to verify your account. *')
+        return res.render('register', { success: req.flash('success') });
+
       }
       
     });
@@ -461,7 +474,7 @@ app.get("/passchange", function(req, res) {
 
   var passQueryParameter = req.query.id;
 
-  console.log("/passchange query ID =" + passQueryParameter)
+  console.log("/passchange query ID = " + passQueryParameter)
   
   connection.query("SELECT * FROM tbl_users_test WHERE passwordResetToken = ?", [passQueryParameter], function (err, rows){
     if (err){
@@ -572,9 +585,10 @@ app.post("/change-unauth-password", function (req, res, done) {
       return res.redirect('/sigin')
     }
     if (!rows.length) {
-      console.log('Emal does not exist in database')
-      req.flash('message', 'Email does not exist in database')
-      return res.redirect('/signin')
+      console.log('Email does not exist in database')
+
+      req.flash('message', '* Email does not exist in the Database. Are you sure you have entered it correctly? *')
+      return res.render('changepassword', { message: req.flash('message') });
     }
     console.log('Email has been found in the database')
   })
@@ -603,6 +617,15 @@ app.post("/change-unauth-password", function (req, res, done) {
       return res.redirect("/signin");
     } else {
       console.log("Message sent: " + response.message);
+
+      req.flash('success', '* Password reset link sent successfully *')
+      return res.render('changepassword', { success: req.flash('success') });
+
+
+
+
+
+
       req.flash('message', 'Password reset link sent.')
       return res.redirect("/signin");
     }
@@ -637,7 +660,7 @@ app.post("/change-unauth-password", function (req, res, done) {
 
 /*--------------------ADMINISTRATOR DASHBOARD FUNCTIONS-----------------------*/
 
-app.post("/admin-change-password", function(req, res) {
+app.post("/admin-reset-password", function(req, res) {
 
   var selectResetUser = req.body.selectResetUser;
   
@@ -699,11 +722,58 @@ app.post("/admin-change-password", function(req, res) {
       } else {
         console.log("Message sent: " + response.message);
         req.flash('success', '* User "' + selectResetUser + '" Password Reset *')
-        return res.render('admin', { success: req.flash('success') });
+        return res.render('adminResetUserPass', { success: req.flash('success') });
       }
     })
   })
 })
+
+app.post("/admin-delete-user", function(req,res){
+
+  var deleteUser = req.body.selectDeleteUser;
+
+  connection.query("DELETE FROM tbl_users_test WHERE username = ?", [deleteUser], function(err, rows){
+    if (err) {
+      req.flash('message', '* Database Error *')
+      return res.render('adminDeleteUser', { message: req.flash('message') });
+    }
+
+    if (!rows.length) {
+      req.flash('message', '* User "' + deleteUser + '" not found *')
+      return res.render('adminDeleteUser', { message: req.flash('message') });
+    }
+
+    req.flash('success', '* User Account "' + deleteUser + '" has been deleted *')
+    return res.render('adminDeleteUser', { success: req.flash('success') });
+
+  })
+
+
+
+})
+
+app.post("/admin-change-username", function(req, res) {
+
+  // Perhaps try to add in a dynamic dropdown of users here.
+
+  existingUser = req.body.selectChangeUsername;
+  newUsername = req.body.selectChangeUsernameNew;
+
+  connection.query("UPDATE tbl_users_test SET username = ? WHERE username = ?", [newUsername, existingUser], function(err, rows){
+    if (err) {
+      req.flash('message', 'Database Error')
+      return res.render('admin', { message: req.flash('message') });
+    }
+
+    console.log('ADMIN: Username successfully changed')
+    req.flash('success', 'Username has been successfully changed!')
+    return res.render('adminChangeUsername', { success: req.flash('success') });
+   })
+  })
+
+
+
+
 
 
 
