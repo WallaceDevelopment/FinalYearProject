@@ -1,0 +1,19 @@
+extends layout-auth
+block content
+      .wrapper
+           form.form-signin(method='', action='')
+             h3(id='adminID') #[center #[u Reset a User's Password]]
+           //- This POST form allows an Administrator to modify an existing user.
+
+           form.form-signin(method='post', action='/admin-change-password')
+             input.form-control(type='text', name='selectResetUser', placeholder='Existing User', maxlength='30')
+             br
+             button.btn.btn-lg.btn-primary.btn-block(type='submit' id="selectResetUserSubmit") Reset Password
+
+        
+
+
+
+
+
+

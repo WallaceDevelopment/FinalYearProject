@@ -24,8 +24,8 @@ textarea {
 }
 
 .form-signin {
-  max-width: 380px;
-  padding: 15px 35px 45px;
+  max-width: 420px;
+  padding: 15px 35px 35px;
   margin: 0 auto;
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -95,6 +95,17 @@ padding-bottom: 5px;
   text-align: center;
   text-decoration: underline;
   display: none;
+  overflow-wrap: normal;
+}
+
+.alert alert-success{
+  display: none;
+}
+
+#adminAlert{
+  text-align: center;
+  text-decoration: underline;
+  visibility: none;
   overflow-wrap: normal;
 }
 

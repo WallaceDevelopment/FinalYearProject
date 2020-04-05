@@ -10,6 +10,22 @@ block content
             div(class='alert alert-info' text-align='centre' style='display:block') #{message}
           - }
 
+          - if(success !=null){
+             
+             //- p(style="visibility:show" id="adminSelectSuc") #{success}
+             div(class='alert alert-success' text-align='centre' style='display:block') #{success}
+             br
+          - }
+
+
+
+
+
+
+
+
+
+
           .form-group
             label(for='username') Username
             input.form-control(type='text', name='username', placeholder='Username' required)

@@ -9,7 +9,8 @@ block content
         }
       .wrapper
            form.form-signin(method='', action='/dashboard')
-             h4.form-signin-heading.text-wrap Welcome Back, #{full_name}     
+             h4 #[center Welcome Back, #{full_name}]    
+             br
              table
                 tr
                     th #[center Username]
@@ -20,7 +21,7 @@ block content
                     td  #[center #{full_name}]
                     td  #[center #{email}]
              
-             label.checkbox
+             br
              p #[center You have logged in successfully! Please use the links below to access the Dashboard or change your password.]
 
            form.form-signin(method='', action='')
