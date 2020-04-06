@@ -1,0 +1,40 @@
+extends layout-auth
+block content
+      style.
+        table { width: 100%; }
+        th, tr, td {
+          border: 1px solid black;
+          padding: 10px;
+          margin: 10px;
+        }
+      .wrapper
+           form.form-signin(method='', action='')
+             h3 #[center Welcome Back, #{full_name}.]    
+             br
+             
+             br
+             p #[center This is the home page for the web app.]
+
+
+             - if(message !=null){
+             
+             div(class='alert alert-danger' text-align='centre' style='display:block') #{message}
+
+
+
+             - }
+
+             - if(success !=null){
+             
+             //- p(style="visibility:show" id="adminSelectSuc") #{success}
+             div(class='alert alert-success' text-align='centre' style='display:block') #{success}
+
+
+             - }
+
+            
+           form.form-signin(method='', action='')
+             a(href="/dashboard" type="button" class="btn btn-default btn-block") Open Dashboard
+             a(href="/users" type="button" class="btn btn-default btn-block") My Account
+            
+             a(href="/admin" type="button" class="btn btn-default btn-block") #[center Administrator Settings]

@@ -8,8 +8,8 @@ block content
           margin: 10px;
         }
       .wrapper
-           form.form-signin(method='', action='/dashboard')
-             h4 #[center Welcome Back, #{full_name}]    
+           form.form-signin(method='', action='')
+             h3 #[center My Account ]    
              br
              table
                 tr
@@ -22,7 +22,7 @@ block content
                     td  #[center #{email}]
              
              br
-             p #[center You have logged in successfully! Please use the links below to access the Dashboard or change your password.]
+             p #[center Welcome to your account settings, from here you can change your account details using the options found below.]
 
 
              - if(message !=null){

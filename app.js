@@ -10,6 +10,7 @@ var nodemailer = require('nodemailer');
 
 // Set routes for html pages - new pages need to be added here to link them with their route files
 var index = require('./routes/index');
+var home = require('./routes/home');
 var users = require('./routes/users');
 var register = require('./routes/register');
 var changepassword = require('./routes/changepassword');
@@ -17,6 +18,7 @@ var accessibility = require('./routes/accessibility');
 var dashboard = require('./routes/dashboard');
 var verify = require('./routes/verify');
 var contactus = require('./routes/contactus');
+var aboutus = require('./routes/aboutus');
 
 var admin = require('./routes/admin');
 var adminResetUserPass = require('./routes/adminResetUserPass');
@@ -71,11 +73,13 @@ app.use(function(req, res, next){
 
 app.use('/', index);              // The '/' directory will display the index page
 app.use('/users', users);         // The /users directory will display the users page
+app.use('/home', home);
 app.use('/register', register);   // The /register directory will display the register page
 app.use('/changepassword', changepassword);
 app.use('/accessibility', accessibility);
 app.use('/dashboard', dashboard);
 app.use('/contactus', contactus);
+app.use('/aboutus', aboutus);
 
 app.use('/admin', admin);
 app.use('/adminResetUserPass', adminResetUserPass);
@@ -175,7 +179,7 @@ app.get('/signin', function (req, res) {
    an unsuccessful outcome will redirect the user to the /signin page.
 */
 app.post("/signin", passport.authenticate('local', {
-  successRedirect: '/users',
+  successRedirect: '/home',
   failureRedirect: '/signin',
   failureFlash: true
 }), function (req, res, info) {
@@ -603,11 +607,13 @@ app.post("/change-unauth-password", function (req, res, done) {
     }
   })
 
+  contactUsLink = "http://"+req.get('host')+"/contactus";
+
   mailOptions = {
     from: '"Dashboard Application" <leepjwallace@gmail.com>',
     to: passEmail,
     subject: "Password Reset Request",
-    html: "<center>Hello, <br><br> Please use the link below to reset your password<br><br><a href=" + passLink + ">Click Here to reset password</a></center>"
+    html: "<center>Hello, <br><br> Please use the link below to reset your password<br><br><a href=" + passLink + ">Click Here to reset password</a><br><br><a href=" + contactUsLink + "> Contact Us</a></center>"
   }
   // console.log("These are the mailOptions " + mailOptions);
   smtpTransport.sendMail(mailOptions, function (error, response) {
@@ -728,28 +734,34 @@ app.post("/admin-reset-password", function(req, res) {
   })
 })
 
-app.post("/admin-delete-user", function(req,res){
+app.post("/admin-delete-user", function (req, res) {
 
   var deleteUser = req.body.selectDeleteUser;
 
-  connection.query("DELETE FROM tbl_users_test WHERE username = ?", [deleteUser], function(err, rows){
+  if (deleteUser == req.session.user) {
+
+    req.flash('message', '* Error: You are currently signed in as this user. *')
+    return res.render('adminDeleteUser', { message: req.flash('message') });
+
+  }
+
+  connection.query("DELETE FROM tbl_users_test WHERE username = ?", [deleteUser], function (err, rows) {
     if (err) {
       req.flash('message', '* Database Error *')
       return res.render('adminDeleteUser', { message: req.flash('message') });
     }
 
-    if (!rows.length) {
+    console.log(rows)
+
+    if (rows.affectedRows == 0) {
       req.flash('message', '* User "' + deleteUser + '" not found *')
       return res.render('adminDeleteUser', { message: req.flash('message') });
     }
 
     req.flash('success', '* User Account "' + deleteUser + '" has been deleted *')
     return res.render('adminDeleteUser', { success: req.flash('success') });
-
+    
   })
-
-
-
 })
 
 app.post("/admin-change-username", function(req, res) {

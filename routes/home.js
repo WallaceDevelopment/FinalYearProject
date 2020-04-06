@@ -8,10 +8,8 @@ router.get('/', isAuthenticated, function(req, res, next) {
   var username   = req.session.user.username;
   var full_name  = req.session.user.full_name;
   var email = req.session.user.email;
-  
-  var user = true;
     
-  res.render('dashboard', { username: username, full_name: full_name, email : email, user : user });
+  res.render('home', { username: username, full_name: full_name, email : email });
 
 });
 
@@ -23,5 +21,8 @@ function isAuthenticated(req, res, next) {
   // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SIGNIN PAGE
   res.redirect('/signin');
 }
+
+
+
 
 module.exports = router;

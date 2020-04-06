@@ -12,15 +12,14 @@ router.get('/', function(req, res, next) {
     var email = req.session.user.email;
     var user = true;
 
-    res.render('contactus', { username: username, full_name: full_name, email : email, user : user }); //ensure that this is the file name and not a file path when rendering new pages
+    res.render('aboutus', { username: username, full_name: full_name, email : email, user : user }); //ensure that this is the file name and not a file path when rendering new pages
 
   } else {
-    res.render('contactus'); //ensure that this is the file name and not a file path when rendering new pages
+    res.render('aboutus'); //ensure that this is the file name and not a file path when rendering new pages
 
   }
 
-
- 
+  
   });
 
   

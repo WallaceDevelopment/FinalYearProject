@@ -165,7 +165,8 @@ p.footer-auth{
 }
 
 #tableauPlaceholder {
-  position: relative;
+  position: absolute;
+  width: 100px;
 }
 
 #adminSelectErr {
@@ -187,6 +188,15 @@ p.footer-auth{
 #deleteUserCheckboxLabel {
   padding-left: 10px;
 }
+
+table, th, tr, td{
+  border: 1px solid black;
+
+}
+
+
+
+
 
 
 
