@@ -12,8 +12,8 @@ block content
              h3 #[center Welcome Back, #{full_name}.]    
              br
              
-             br
-             p #[center This is the home page for the web app.]
+             
+             
 
 
              - if(message !=null){
@@ -31,10 +31,12 @@ block content
 
 
              - }
-
+             p #[center This is the home page for the web app.]
             
            form.form-signin(method='', action='')
              a(href="/dashboard" type="button" class="btn btn-default btn-block") Open Dashboard
              a(href="/users" type="button" class="btn btn-default btn-block") My Account
-            
-             a(href="/admin" type="button" class="btn btn-default btn-block") #[center Administrator Settings]
+             
+           if isAdmin == 1
+            form.form-signin(method='', action='')
+              a(href="/admin" type="button" class="btn btn-default btn-block") #[center Administrator Settings]

@@ -194,8 +194,9 @@ table, th, tr, td{
 
 }
 
-
-
+#spinner {
+  display: block;
+}
 
 
 
