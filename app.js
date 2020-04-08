@@ -335,7 +335,7 @@ app.post("/register", [
       } else {
         console.log("Message sent: " + response.message);
 
-        req.flash('success', '* Registration Successful! Please check your email to verify your account. *')
+        req.flash('success', 'Registration Successful! Please check your email to verify your account.')
         return res.render('register', { success: req.flash('success') });
 
       }
@@ -385,7 +385,7 @@ app.get('/verify', function(req,res) {
     // If user is already verified, return message to notify the user and redirect to signin page.
     verifyUser = rows[0].username 
     if (rows[0].isVerified == 1) {
-      req.flash('message', 'Account Username: "' + verifyUser + '" is already verified. Please login to contiue');
+      req.flash('message', 'Account is already verified. Please login to continue.');
       return res.redirect('/signin');
     }
 
@@ -398,7 +398,8 @@ app.get('/verify', function(req,res) {
       console.log('')
       console.log("*** User successfully verified ***")
       console.log('')
-      req.flash('message', 'Account Verified! Please login to continue')
+
+      req.flash('message', 'Account Verified! Please login to continue.')
       return res.redirect('/signin')
     })
   })
