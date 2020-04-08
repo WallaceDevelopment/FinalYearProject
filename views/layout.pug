@@ -15,7 +15,11 @@ html(lang='en')
     link(rel='stylesheet', href='/stylesheets/style.css')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js')
     script(src='/javascripts/script.js')
-    script(src='/javascripts/bootstrap.min.js')
+    script(src='https://unpkg.com/@popperjs/core@2')
+    script(src='/javascripts/bootstrap.js')
+
+    //link(rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.css")
+
 
     
     <script type="text/javascript"> var onloadCallback = function() { grecaptcha.render('html_element', {'sitekey' : '6Lc109oUAAAAAMgt5gCc7vr1R0yfwi5UuWsmco9n'});};</script>
@@ -39,16 +43,23 @@ html(lang='en')
 
     <ul class="nav navbar-nav">
       <li><a href="/home"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-      <li><a href="/accessibility"><span class="glyphicon glyphicon-globe"></span> Accessibility</a></li>
-      <li><a href="/aboutus"><span class="glyphicon glyphicon-info-sign"></span> About Us</a></li>
-
       //- If the user variable has been passed using the page route, it will display the 'Dashboard' Link
       if user
         <li><a href="/dashboard"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
+      <li><a href="/aboutus"><span class="glyphicon glyphicon-info-sign"></span> About Us</a></li>
+
+
+
+
+
+
+
+
 
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li><a href="/contactus"><span class="glyphicon glyphicon-envelope"></span> Contact Us</a></li>
+      <li><a href="/accessibility"><span class="glyphicon glyphicon-globe"></span> Accessibility</a></li>
 
 
       //- If the user variable has been passed using the page route, it will display the 'My Account Navbar Option.'
@@ -62,10 +73,21 @@ html(lang='en')
         </li>
 
 
-
     </ul>
   </div>
 </nav>  
+
+
+<!-- START Bootstrap-Cookie-Alert -->
+<div class="alert text-center cookiealert" role="alert">
+    <b>Cookie Alert </b> &#x1F36A; We use cookies to track your login sessions on our website.
+
+    <a href="/aboutus" target="_self" type="button" class="btn btn-primary btn-sm learnmore">Learn More</a>
+    <button type="button" class="btn btn-primary btn-sm acceptcookies" aria-label="Close"><u>Accept</u></button>
+</div>
+<!-- END Bootstrap-Cookie-Alert -->
+<script src="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.js"></script>
+
 
 
   block content

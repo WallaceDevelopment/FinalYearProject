@@ -31,6 +31,15 @@ textarea {
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+.form-home {
+  max-width: 950px;
+  padding: 15px 35px 35px;
+  margin: 0 auto;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+
+}
+
 .form-signin .form-signin-heading,
 .form-signin .checkbox {
   margin-bottom: 30px;
@@ -80,6 +89,7 @@ textarea {
 .navbar-inverse{
   position: relative;
   margin-top: -50px;
+  background-color: #212327;
 }
 
 /* 
@@ -93,7 +103,6 @@ padding-bottom: 5px;
 
 .alert{
   text-align: center;
-  text-decoration: underline;
   display: none;
   overflow-wrap: normal;
 }
@@ -194,8 +203,49 @@ table, th, tr, td{
 
 }
 
-#spinner {
-  display: block;
+
+/*
+ * Bootstrap Cookie Alert by Wruczek
+ * https://github.com/Wruczek/Bootstrap-Cookie-Alert
+ * Released under MIT license
+ */
+.cookiealert {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin: 0 !important;
+    z-index: 999;
+    opacity: 0;
+    border-radius: 0;
+    transform: translateY(100%);
+    transition: all 500ms ease-out;
+    color: #ecf0f1;
+    background: #212327;
+}
+
+.cookiealert.show {
+    opacity: 1;
+    transform: translateY(0%);
+    transition-delay: 1000ms;
+}
+
+.cookiealert a {
+    text-decoration: underline
+}
+
+.cookiealert .acceptcookies {
+    margin-left: 10px;
+    vertical-align: baseline;
+}
+
+.cookiealert .learnmore {
+  margin-left: 10px;
+  vertical-align: baseline;
+}
+
+#registerTooltip {
+  margin-left: 0px;
 }
 
 

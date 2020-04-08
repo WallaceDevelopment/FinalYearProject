@@ -46,7 +46,7 @@ var Store = require('express-session').Store
 var BetterMemoryStore = require(__dirname + '/memory')
 var store = new BetterMemoryStore({ expires: 60 * 60 * 1000, debug: true }) // Session handling in memory
 app.use(sess({
-  name: 'FinalYearProject-Session', // Session name
+  name: 'fyp000938568-session', // Session name
   secret: '749ed3c859', // Session secret
   store: store,
   resave: true,
@@ -393,7 +393,8 @@ app.get('/verify', function(req,res) {
     connection.query("UPDATE tbl_users_test SET isVerified = 1 WHERE username = ?", [verifyUser], function (err, rows) {
       if (err) {
         req.flash('message', err);
-        return res.redirect('/signin');
+        return res.redirect('/signin');            
+
       }
       console.log('')
       console.log("*** User successfully verified ***")
@@ -449,7 +450,16 @@ app.post("/contactus", function (req, res, done) {
 app.post("/change-auth-password", function (req, res, done) {
   // Form Validation is needed here
 
-  newPass = req.body.passwordchange;
+  newPass = req.body.passwordChange;
+  newPassConfirm = req.body.confirmPasswordChange;
+
+  if (newPass !== newPassConfirm) {
+
+    req.flash('message', 'Passwords do not match. Please try again.')
+    return res.render('user', { message: req.flash('message') });
+
+  }
+
   var newPassSalt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6'; //ensure that this is in the environment for the future
   newPassSalt = newPassSalt + '' + newPass;
   var encNewPass = crypto.createHash('sha1').update(newPassSalt).digest('hex');
@@ -465,13 +475,12 @@ app.post("/change-auth-password", function (req, res, done) {
   connection.query(newPassSql, function (err, result) { //values inserted into the query
     if (err) throw err;
     console.log("\n *** Success! Password Changed *** \n"); // logs a success of the operation in the console.
-    req.flash('message', 'Password change successful!')
+    req.flash('message', 'Password change successful! Please login to continue.')
     req.logout();
     res.redirect('/signin');
   })
 
 });
-
 
 /*-----------------------------CHANGE USER PASS-------------------------------*/
 

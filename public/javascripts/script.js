@@ -12,6 +12,10 @@ $('#list-tab a').on('click', function (e) {
   $(this).tab('show')
 })
 
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+
 
 // This AJAX code makes a call to the express backend for form validation.
 

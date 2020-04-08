@@ -6,7 +6,10 @@ block content
           .alert(class="alert-danger", role="alert", id="error-group", style="display: none")
             ul(id="errors")
           form.form-signin(method='post' action='/register')
-            h3 #[center Register a new user]
+            h3 #[center Register a new account]
+
+            a(id ="registerTooltip" type="button" class="btn btn-info btn-sm" data-html="true" data-toggle="tooltip" data-placement="left" offset ="30" animation="true" title="<li>Username and Full Name must not exceed 40 characters.</li><li>Passwords must have a minimum of 5 characters.</li><li>Emails must have an '@' symbol.</li><li>Passwords must match.</li>") Hover for Requirements
+
 
             br
             - if(message !=null){
@@ -26,11 +29,11 @@ block content
             |
             .form-group
               label(for='username') Username
-              input.form-control(type='text', name='username', placeholder='Username' required)
+              input.form-control(type='text', name='username', placeholder='Username' maxlength='40' required autofocus)
             |
             .form-group
-              label(for='fullname') Fullname
-              input.form-control(type='text', name='fullname', placeholder='Full Name' required)
+              label(for='fullname') Full Name
+              input.form-control(type='text', name='fullname', placeholder='Full Name' maxlength='40' required)
             |
             .form-group
               label(for='email') Email

@@ -22,7 +22,7 @@ block content
                     td  #[center #{email}]
              
              br
-             p #[center Welcome to your account settings, from here you can change your account details using the options found below.]
+             p #[center Welcome to your Account Settings. #[br] You can change your account details using the links below.]
 
 
              - if(message !=null){
@@ -43,13 +43,15 @@ block content
 
             
            form.form-signin(method='', action='')
-             a(href="/dashboard" type="button" class="btn btn-default btn-block") Open Dashboard
+             a(href="/dashboard" type="button" class="btn btn-primary btn-block") Open Dashboard
              a(id="showPasswordForm" type="button" class="btn btn-default btn-block") Change Password
-             br
-             a(href="/admin" type="button" class="btn btn-default btn-block") #[center Administrator Settings]
+             
 
            form.form-signin(id="formAuthPassword" method='post', action='/change-auth-password')
-             input.form-control(type='password', name='passwordchange', placeholder='New Password' required)
+             h3 #[center Change Password]
+             label(for="passwordChange") New Password
+             input.form-control(type='password', name='passwordChange', placeholder='New Password' required)
+             label(for="confirmPasswordChange") Confirm Password
              input.form-control(type='password', name='confirmPasswordChange' placeholder='Confirm New Password' required)
              button.btn.btn-lg.btn-primary.btn-block(type='submit') Submit
 
