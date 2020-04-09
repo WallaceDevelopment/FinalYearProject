@@ -43,8 +43,10 @@ block content
 
             
            form.form-signin(method='', action='')
-             a(href="/dashboard" type="button" class="btn btn-primary btn-block") Open Dashboard
+             a(href="/dashboard" type="button" class="btn btn-default btn-block") Open Dashboard
              a(id="showPasswordForm" type="button" class="btn btn-default btn-block") Change Password
+             br
+             a(id="showDeleteAccModal" type="button" class="btn btn-danger btn-block" data-toggle="modal" data-target="#deleteaccmodal") Delete Account
              
 
            form.form-signin(id="formAuthPassword" method='post', action='/change-auth-password')
@@ -54,5 +56,21 @@ block content
              label(for="confirmPasswordChange") Confirm Password
              input.form-control(type='password', name='confirmPasswordChange' placeholder='Confirm New Password' required)
              button.btn.btn-lg.btn-primary.btn-block(type='submit') Submit
+
+           div(class="modal fade" tabindex="-1" role="dialog" id="deleteaccmodal")
+            div(class="modal-dialog" role="document")
+              div(class="modal-content")
+                div(class="modal-header")
+                  h4 #[center Deleting your Account]
+                  button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+
+                div(class="modal-body")
+                  p #[center Are you sure? This action is #[b irreversible.]]
+                div(class="modal-footer")
+                  a(type="button" class="btn btn-default" data-dismiss="modal") Close
+                  a(href="/deleteacc" type="button" class="btn btn-danger") Delete Account
+
+
+          
 
 

@@ -17,6 +17,8 @@ $(function () {
 })
 
 
+
+
 // This AJAX code makes a call to the express backend for form validation.
 
 $('#register-btn').click(function () {

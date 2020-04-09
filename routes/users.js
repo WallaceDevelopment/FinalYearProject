@@ -5,11 +5,12 @@ var router = express.Router(); // Similarily, the router variable must be associ
 
 router.get('/', isAuthenticated, function(req, res, next) {
 
+  var userid = req.session.user.id;
   var username   = req.session.user.username;
   var full_name  = req.session.user.full_name;
   var email = req.session.user.email;
     
-  res.render('user', { username: username, full_name: full_name, email : email });
+  res.render('user', { userid : userid, username: username, full_name: full_name, email : email });
 
 });
 

@@ -248,6 +248,9 @@ table, th, tr, td{
   margin-left: 0px;
 }
 
+.modal-footer{
+  text-align: center;
+}
 
 
 

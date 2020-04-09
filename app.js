@@ -318,7 +318,7 @@ app.post("/register", [
     host = req.get('host');
     link = "http://"+req.get('host')+"/verify?id="+regVerificationToken;
     contactUsLink = "http://"+req.get('host')+"/contactus";
-    ErrEmailLink = "http://"+req.get('host')+"/removeacc";
+    ErrEmailLink = "http://"+req.get('host')+"/verifydelete?id="+regVerificationToken;
 
     mailOptions = {
       from: '"Dashboard Application" <leepjwallace@gmail.com>',
@@ -405,6 +405,103 @@ app.get('/verify', function(req,res) {
     })
   })
 });
+
+/*-----------------------/VERIFYDELETE LINK------------------------*/
+
+// This function is used to check the '?id=' query against the /verifydelete link.
+// If a correct verificationToken query is parsed correctly using this link, the associated user account will be deleted.
+
+app.get('/verifydelete', function(req,res) {
+  var queryParameter = req.query.id;
+  console.log('')
+  console.log("/verifydelete Callback Query ID = " + req.query.id)
+  
+  
+  connection.query("DELETE FROM tbl_users_test WHERE verificationToken = ?", [queryParameter], function (err, rows) {
+    if (err) {
+      req.flash('message', err);
+      return res.redirect('/signin');
+    }
+
+    if (rows.affectedRows == 0) {
+      req.flash('message', 'No Account Found');
+      return res.redirect('/signin')
+    }
+
+    console.log('')
+    console.log("*** Account Deleted ***")
+    console.log('')
+
+    req.flash('message', 'Account Successfully Deleted.')
+    return res.redirect('/signin')
+  })
+});
+
+/*-----------------------/DELETEACCLINK------------------------*/
+
+// This function is used to delete a user's account.
+
+app.get('/deleteacc', function (req, res) {
+
+  if (!req.session.user) {
+    req.flash('message', 'Please sign in to continue.');
+    return res.redirect('/signin');
+  }
+
+  if (req.session.user) {
+    userDBID = req.session.user.id;
+    req.logout();
+
+    connection.query("DELETE FROM tbl_users_test WHERE id = ?", [userDBID], function (err, rows) {
+      if (err) {
+        req.flash('message', err)
+        return res.render('user', { message: req.flash('message') });
+      }
+
+      if (rows.affectedRows == 0) {
+        req.flash('message', 'Account Delete unsuccessful')
+        return res.render('user', { message: req.flash('message') });
+      }
+
+      req.flash('message', 'Account Deleted.')
+      return res.redirect('/signin')
+
+
+
+
+    })
+  }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*-----------------------CONTACT US FORM HANDLING-----------------------*/
 
@@ -530,7 +627,7 @@ app.get("/passchange", function(req, res) {
 
     host = req.get('host');
     contactUsLink = "http://"+req.get('host')+"/contactus";
-    ErrEmailLink = "http://"+req.get('host')+"/removeacc";
+    ErrEmailLink = "http://"+req.get('host')+"/verifydelete";
 
     mailOptions = {
       from: '"Dashboard Application" <leepjwallace@gmail.com>',
@@ -721,7 +818,7 @@ app.post("/admin-reset-password", function(req, res) {
 
     host = req.get('host');
     contactUsLink = "http://"+req.get('host')+"/contactus";
-    ErrEmailLink = "http://"+req.get('host')+"/removeacc";
+    ErrEmailLink = "http://"+req.get('host')+"/verifydelete";
 
     mailOptions = {
       from: '"Dashboard Application" <leepjwallace@gmail.com>',
