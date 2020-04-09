@@ -20,9 +20,34 @@ block content
              p #[center New users can gain access to the system by following a famililar registration process to verify their account starting #[a(href="/register") here.]]
              p #[center Administrators are able to change details of other users accounts. These functionalities require elevated permissions and are restricted from other users.]
              
-             br
-             h4 #[center Use of Cookies] 
+             
+             h3 #[center Use of Cookies]  
              p #[center This Web Application uses cookies to track login sessions of users. Users sessions sign out after a pre-determined time - although cookies will remain on your machine. Cookies are kept on the users machine for 365 days to prevent the reappearance of the cookie alert.]
+             br
+             a(id="modalbtn" type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#moreinfomodal") System Information
+
+
+           div(class="modal fade" tabindex="-1" role="dialog" id="moreinfomodal")
+            div(class="modal-dialog" role="document")
+              div(class="modal-content")
+                div(class="modal-header")
+                  h4 #[center System Information]
+                  button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+
+                div(class="modal-body")
+                  p #[center Hosted On: #[b Heroku.]]
+                  p #[center Engine: Powered by the #[b NodeJS Runtime] and #[b V8 JavaScript Engine.]]
+                  p #[center Login System: #[b PassportJS | MySQL]]
+                  p #[center Framework: #[b ExpressJS]]
+                  p #[center UI Framework: #[b Bootstrap@4]]
+                  p #[center Dashboard: #[b Tableau]]
+                  br
+                  p #[center #[b #[a(target="_blank")(href="https://www.github.com/WallaceDevelopment/FinalYearProject") Project Github Repository]]]
+                  p #[center #[b Prototype 3 (Final) | Developed by Lee Wallace.]]
+
+
+                div(class="modal-footer")
+                  a(type="button" class="btn btn-default" data-dismiss="modal") Close
 
 
 //-
