@@ -2,15 +2,19 @@
 
 # Final Year Undergraduate Project
 
-Interactive visualisation dashboard system, used for analysis on youth service budget funding and knife crime in London.
+<center>Interactive visualisation dashboard system, used for analysis on youth service budget funding and knife crime in London.</center>
 
 ---
 
-- Submitted for partial fulfilment of BSc Business w/ Information Technology at the University of Greenwich.
+- Submitted for the partial fulfilment of BSc Business w/ Information Technology at the University of Greenwich.
 
-- Powered by the Node.js runtime and Express.
-- MySQL database powered by AWS RDBMS.
-- Skeleton login code provided by [Programmerblog.net](http://programmerblog.net/nodejs-passport-login-mysql/)
+- Hosted On: **Heroku.**
+- Engine: Powered by the **NodeJS Runtime.**
+- Login System: **PassportJS | MySQL**
+- Framework: **ExpressJS**
+- UI Framework: **Bootstrap@4**
+- Dashboard: **Tableau**
+
 
 ## How to Use
 
@@ -24,7 +28,8 @@ Interactive visualisation dashboard system, used for analysis on youth service b
 
 ## Dependencies
 
-- Found in package.json
+- The Package.JSON file shows all module dependencies for the system.
+
 ```
 
 {
@@ -57,7 +62,9 @@ Interactive visualisation dashboard system, used for analysis on youth service b
   }
 }
 ```
+## Acknowledgements
 
+- Skeleton login code provided by [Programmerblog.net](http://programmerblog.net/nodejs-passport-login-mysql/)
 
 
 
