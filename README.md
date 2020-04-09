@@ -2,7 +2,7 @@
 
 # Final Year Undergraduate Project
 
-<center>Interactive visualisation dashboard system, used for analysis on youth service budget funding and knife crime in London.</center>
+Interactive visualisation dashboard system, used for analysis on youth service budget funding and knife crime in London.
 
 ---
 
@@ -18,20 +18,21 @@
 
 ## How to Use
 
-- Install [npm](https://www.npmjs.com/get-npm) | This is the default NodeJS package manager. It is required to install project dependencies.
-- Install [NodeJS](https://nodejs.org/en/download/) | JavaScript runtime environment for Web Development
+- Install [npm](https://www.npmjs.com/get-npm) | This is the default NodeJS package manager. 
+- Install [NodeJS](https://nodejs.org/en/download/)
+- Install [Git](https://git-scm.com/downloads) | Version Control system for tracking changes in source code during software development. 
 - Clone repository to local machine using `git clone https://github.com/WallaceDevelopment/FinalYearProject`
-- Run `npm install` | This installs the system dependencies, found in package.json.
+- Run `npm install` | This installs the project dependencies, found in package.json.
 - `cd` to the directory and run with `npm start` or `nodemon start`
 
 ---
 
 ## Dependencies
 
-- The Package.JSON file shows all module dependencies for the system.
+- The Package.JSON file shows all module dependencies for the project.
+
 
 ```
-
 {
   "name": "wallacefyp",
   "version": "0.0.0",
@@ -62,9 +63,11 @@
   }
 }
 ```
+
 ## Acknowledgements
 
-- Skeleton login code provided by [Programmerblog.net](http://programmerblog.net/nodejs-passport-login-mysql/)
+- Skeleton login code adapted from [Programmerblog.net](http://programmerblog.net/nodejs-passport-login-mysql/)
+- Cookie Message adapted from [Github User Wruczek](https://github.com/Wruczek/Bootstrap-Cookie-Alert)
 
 
 
