@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var { check, validationResult } = require('express-validator');
 var nodemailer = require('nodemailer');
+require('dotenv').config()
 
 // Set routes for html pages - new pages need to be added here to link them with their route files
 var index = require('./routes/index');
@@ -118,7 +119,8 @@ passport.use('local', new LocalStrategy({
 
   if (!username || !password) { return done(null, false, req.flash('message', 'All fields are required.')); } // If username + password fields null, then throw err.
 
-  var salt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6';
+  
+  var salt = process.env.SALT;
 
   connection.query("select * from tbl_users_test where username = ?", [username], function (err, rows) {       // Find username entered by the user.
     console.log(err);
@@ -295,7 +297,7 @@ app.post("/register", [
     console.log("*** User has submitted the password: " + regPassword + " ***")
     console.log("*** User has submitted the fullname: " + regFullName + " ***")
 
-    var regSalt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6'; //Salt will be kept as environment variable in the future.
+    var regSalt = process.env.SALT; //Salt will be kept as environment variable in the future.
     regSalt = regSalt + '' + regPassword;
     var encRegPassword = crypto.createHash('sha1').update(regSalt).digest('hex');
     console.log("*** The Encoded password is: " + encRegPassword + " ***")
@@ -557,7 +559,7 @@ app.post("/change-auth-password", function (req, res, done) {
 
   }
 
-  var newPassSalt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6'; //ensure that this is in the environment for the future
+  var newPassSalt = process.env.SALT; //ensure that this is in the environment for the future
   newPassSalt = newPassSalt + '' + newPass;
   var encNewPass = crypto.createHash('sha1').update(newPassSalt).digest('hex');
   console.log("\n *** The New Encoded password is: " + encNewPass + " ***")
@@ -609,7 +611,7 @@ app.get("/passchange", function(req, res) {
     console.log(newPassword);
     console.log("New Password: "+ newPasswordSalt) // This is the new password that should be sent to the user.
 
-    var PasswordChangeSalt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6';
+    var PasswordChangeSalt = process.env.SALT;
     salt = PasswordChangeSalt + '' + newPasswordSalt
     var newPass = crypto.createHash('sha1').update(salt).digest('hex'); 
 
@@ -802,7 +804,7 @@ app.post("/admin-reset-password", function(req, res) {
     console.log(newPassword);
     console.log("New Password: "+ newPasswordSalt) // This is the new password that should be sent to the user.
 
-    var PasswordChangeSalt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6';
+    var PasswordChangeSalt = process.env.SALT;
     salt = PasswordChangeSalt + '' + newPasswordSalt
     var newPass = crypto.createHash('sha1').update(salt).digest('hex'); 
 
