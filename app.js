@@ -73,9 +73,9 @@ app.use(function(req, res, next){
 });
 
 app.use('/', index);              // The '/' directory will display the index page
-app.use('/users', users);         // The /users directory will display the users page
+app.use('/users', users);         
 app.use('/home', home);
-app.use('/register', register);   // The /register directory will display the register page
+app.use('/register', register);   
 app.use('/changepassword', changepassword);
 app.use('/accessibility', accessibility);
 app.use('/dashboard', dashboard);
@@ -102,8 +102,8 @@ var smtpTransport = nodemailer.createTransport({
 });
 
 var rand, mailOptions, host, link;
-//rand = Math.floor((Math.random() * 100) + 54);
-/*-------------------/REGISTER VERIFIFCATION-----------------------*/
+
+/*--------------------------LOGIN SYSTEM--------------------------*/
 
 
 
@@ -119,7 +119,6 @@ passport.use('local', new LocalStrategy({
 
   if (!username || !password) { return done(null, false, req.flash('message', 'All fields are required.')); } // If username + password fields null, then throw err.
 
-  
   var salt = process.env.SALT;
 
   connection.query("select * from tbl_users_test where username = ?", [username], function (err, rows) {       // Find username entered by the user.
@@ -130,12 +129,9 @@ passport.use('local', new LocalStrategy({
 
     salt = salt + '' + password;      // Concatenate salt and password
 
-    var encPassword = crypto.createHash('sha1').update(salt).digest('hex');   // Create sha1 hash
+    var encPassword = crypto.createHash('sha1').update(salt).digest('hex');   // Create SHA1 hash
     var dbPassword = rows[0].password;   // Crawl database to see if password exists
-    var dbIsVerified = rows[0].isVerified;
-    var stringJson = JSON.stringify(rows);
-    console.log(stringJson)
-    console.log("Database Verification BOOLEAN: "+dbIsVerified)
+    var dbIsVerified = rows[0].isVerified; // 
 
     // Checks users hashed form password against the hashed password in the database.
     if (!(dbPassword == encPassword)) {
@@ -148,8 +144,6 @@ passport.use('local', new LocalStrategy({
       console.log("\n *** User has not verified their account *** \n")
       return done(null, false, req.flash('message', 'Account has not been verified'));
     }
-
-    
 
     console.log("\n *** Login Successful *** \n")
     req.session.user = rows[0];

@@ -4,7 +4,9 @@ body {
 
 @-ms-viewport{
   width: device-width;
-  }
+}
+
+
 
 textarea {
   resize: none;

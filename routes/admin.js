@@ -41,8 +41,6 @@ function isAuthenticated(req, res, next) {
             req.flash('message', '* This account does not have administrator privileges *')
             return res.render('home', { message: req.flash('message'), username: username, full_name: full_name, email : email });
 
-            req.flash('message', 'This account does not have administrator privileges.')
-            res.redirect('/signin');
         }
     } 
 }
