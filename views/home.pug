@@ -9,9 +9,9 @@ block content
         }
       .wrapper
            form.form-home(method='', action='')
-             h3 #[center Welcome Back, #{full_name}.]    
              br
-                     
+             br
+                
              - if(message !=null){
              
              div(class='alert alert-danger' text-align='centre' style='display:block') #{message}
@@ -24,15 +24,10 @@ block content
              div(class='alert alert-success' text-align='centre' style='display:block') #{success}
 
              - }
-             p #[center This application is designed to be used as a tool that displays visual representations for in both Knife Crime and Youth Service Budget Funding Datasets.]
-             p #[center Carefully designed Visualisations are paired together to represent as much useful information as possible; research during a Literature Review and Product Research showed that a combination of various visualisations are effective. ]
-             p #[center The objective of the Dashboard being constantly available is to allow users to identiy key areas within London alongside constantly updating data, to identify the areas that have had the greatest amount of budget cuts, and to identify how knife crime has changed in this area.]
-             p #[center In identifying these areas, authorities in a position of power will have the information available in a quickly readable format to drive positive change in these areas, improving local communities and London's streets.]
-
 
            form.form-signin(method='', action='')
              a(href="/dashboard" type="button" class="btn btn-primary btn-block") Open Dashboard
-             a(href="/users" type="button" class="btn btn-default btn-block") My Account
+             a(href="/users" type="button" class="btn btn-default btn-block") My Account Settings
              
            if isAdmin == 1
             form.form-signin(method='', action='')

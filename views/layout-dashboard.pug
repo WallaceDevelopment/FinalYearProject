@@ -23,8 +23,7 @@ html(lang='en')
     <div class="navbar-header">
     </div>
     <ul class="nav navbar-nav">
-      <li><a href="/home"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-      <li><a href="/dashboard"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
+      <li><a href="/dashboard"><span class="glyphicon glyphicon-home"></span> Home</a></li>
       <li><a href="/aboutus"><span class="glyphicon glyphicon-info-sign"></span> About Us</a></li>
 
 
@@ -37,8 +36,14 @@ html(lang='en')
 
       <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> My Account <span class="caret"></span></a>
         <ul class="dropdown-menu">
+        if isAdmin == 1
+          <li><a href="/admin"><span class="glyphicon glyphicon-tasks"></span> Admin Settings</a></li>
           <li><a href="/users"><span class="glyphicon glyphicon-cog"></span> Account Settings</a></li>
           <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+        else
+          <li><a href="/users"><span class="glyphicon glyphicon-cog"></span> Account Settings</a></li>
+          <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+
         </ul>
       </li>
     </ul>

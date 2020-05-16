@@ -72,7 +72,6 @@ app.use(function(req, res, next){
   next();
 });
 
-app.use('/', index);              // The '/' directory will display the index page
 app.use('/users', users);         
 app.use('/home', home);
 app.use('/register', register);   
@@ -166,16 +165,20 @@ passport.deserializeUser(function (id, done) {
 });
 
 // Navigating to /signin will render the login/index page
-app.get('/signin', function (req, res) {
-  res.render('login/index', { 'message': req.flash('message') });
+app.get('/', function (req, res) {
+  res.render('landing', { 'message': req.flash('message') });
+});
+
+app.get('/signin', function(req, res) {
+  res.render('login/index', { 'message': req.flash('message')})
 });
 
 /* Using the local strategy of a username and a hashed password, this block of code will authenticate the user with
-   a successful outcome redirecting to /users, where it will produce the visualisation dashboard
+   a successful outcome redirecting to /home, where it will show the home page.
    an unsuccessful outcome will redirect the user to the /signin page.
 */
 app.post("/signin", passport.authenticate('local', {
-  successRedirect: '/home',
+  successRedirect: '/dashboard',
   failureRedirect: '/signin',
   failureFlash: true
 }), function (req, res, info) {
@@ -906,7 +909,7 @@ app.post("/admin-change-username", function(req, res) {
 app.get('/logout', function (req, res) {
   req.session.destroy();
   req.logout();
-  res.redirect('/signin');
+  res.redirect('/');
 });
 
 // Catch 404 and forward to error handler

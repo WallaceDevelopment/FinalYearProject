@@ -5,7 +5,7 @@ var router = express.Router(); // Similarily, the router variable must be associ
 
 router.get('/', function(req, res, next) {
 
-  // res.redirect('/signin');
+  res.redirect('/');
 
 });
 
