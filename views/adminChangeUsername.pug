@@ -1,7 +1,7 @@
 extends layout-auth
 block content
       .wrapper
-           form.form-signin(method='', action='')
+           form.form-other(method='', action='')
              h3(id='adminID') #[center Change User Username]
 
              br
@@ -22,14 +22,14 @@ block content
 
              - }
 
-           form.form-signin(method='post', action='/admin-change-username')
+           form.form-other(method='post', action='/admin-change-username')
              input.form-control(type='text', name='selectChangeUsername', placeholder='Existing User', maxlength='30' required)
              br
              input.form-control(type='text', name='selectChangeUsernameNew', placeholder='New Username', maxlength='30' required)
              br
              button.btn.btn-lg.btn-primary.btn-block(type='submit' id="selectResetUserSubmit") Change Username
 
-           form.form-signin(method='', action='')
+           form.form-other(method='', action='')
 
              a(href="/admin" type="button" class="btn btn-default btn-block") Return to Admin Settings
 

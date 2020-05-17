@@ -1,7 +1,7 @@
 extends layout-auth
 block content
       .wrapper
-           form.form-signin(method='', action='')
+           form.form-other(method='', action='')
              h3(id='adminID') #[center Delete User]
 
              br
@@ -23,7 +23,7 @@ block content
              - }
            
 
-           form.form-signin(method='post', action='/admin-delete-user')
+           form.form-other(method='post', action='/admin-delete-user')
              input.form-control(type='text', name='selectDeleteUser', placeholder='Existing User', maxlength='30' required)
              br
              div(class='form-check form-check-inline')
@@ -33,7 +33,7 @@ block content
              br
              button.btn.btn-lg.btn-primary.btn-block(type='submit' id="selectResetUserSubmit") Delete User
 
-           form.form-signin(method='', action='')
+           form.form-other(method='', action='')
 
              a(href="/admin" type="button" class="btn btn-default btn-block") Return to Admin Settings
 

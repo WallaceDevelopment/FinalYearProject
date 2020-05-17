@@ -30,8 +30,19 @@ textarea {
   padding: 15px 35px 35px;
   margin: 0 auto;
   background-color: #fff;
+  border: 1px solid #337ab7;
+  border-radius: 10px;
+}
+
+.form-other {
+
+  max-width: 520px;
+  padding: 15px 35px 35px;
+  margin: 0 auto;
+  background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 10px;
+
 }
 
 .form-home {
@@ -39,8 +50,29 @@ textarea {
   padding: 15px 35px 35px;
   margin: 0 auto;
   background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid #337ab7;
   border-radius: 10px;
+}
+
+.form-aboutus {
+  padding: 15px 35px 35px;
+  margin: 0 auto;
+  background-color: #fff;
+  border: 1px solid #337ab7;
+  border-radius: 10px;
+  width: 35%;
+
+}
+
+.form-landing {
+  padding-top: 60px !important;
+  padding-bottom: 60px !important;
+  margin: auto;
+  background-color: #fff;
+  border: 1px solid #337ab7;
+  width: auto ;
+
+
 }
 
 .form-signin .form-signin-heading,
@@ -248,7 +280,10 @@ table, th, tr, td{
 }
 
 #registerTooltip {
-  margin-left: 0px;
+  text-align: center;
+  background-color: orange;
+  border: 1px solid orange;
+  color: #fff;
 }
 
 .modal-footer{
@@ -256,10 +291,24 @@ table, th, tr, td{
 }
 
 #proceedBtn {
-  position: sticky !important;
-  margin: 0 350px !important;
+  font-size: 18px !important;
 }
 
+#proceedBtn:hover {
+  font-size: 20px !important;
+}
+
+.marketing .col-lg-4 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.marketing h2 {
+  font-weight: 400;
+}
+.marketing .col-lg-4 p {
+  margin-right: .75rem;
+  margin-left: .75rem;
+}
 
 
 
