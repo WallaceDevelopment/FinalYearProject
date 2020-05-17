@@ -36,10 +36,10 @@ html(lang='en')
     </div>
 
     <ul class="nav navbar-nav">
-      <li><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
       //- If the user variable has been passed using the page route, it will display the 'Dashboard' Link
-      if user
-        <li><a href="/dashboard"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
+
+      <li><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+    
       <li><a href="/aboutus"><span class="glyphicon glyphicon-info-sign"></span> About Us</a></li>
 
 
@@ -61,8 +61,15 @@ html(lang='en')
 
         <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> My Account <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="/users"><span class="glyphicon glyphicon-cog"></span> Account Settings</a></li>
-            <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+
+        if isAdmin == 1
+          <li><a href="/admin"><span class="glyphicon glyphicon-tasks"></span> Admin Settings</a></li>
+          <li><a href="/users"><span class="glyphicon glyphicon-cog"></span> Account Settings</a></li>
+          <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+        else
+          <li><a href="/users"><span class="glyphicon glyphicon-cog"></span> Account Settings</a></li>
+          <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+
           </ul>
         </li>
 

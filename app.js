@@ -166,7 +166,14 @@ passport.deserializeUser(function (id, done) {
 
 // Navigating to /signin will render the login/index page
 app.get('/', function (req, res) {
-  res.render('landing', { 'message': req.flash('message') });
+
+  if (req.session.user) {
+    return res.redirect("/dashboard");
+  } else {
+    res.render('landing', { 'message': req.flash('message') });
+
+
+  }
 });
 
 app.get('/signin', function(req, res) {
