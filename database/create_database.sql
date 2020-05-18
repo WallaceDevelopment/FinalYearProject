@@ -67,3 +67,21 @@ CREATE TABLE `youth_budgets` (
   PRIMARY KEY (`Borough`)
 ) 
 
+CREATE TABLE `db_users`.`Borough` (
+  `BoroughID` INT NOT NULL,
+  `KnifeCrimeID` INT NULL,
+  `YSBID` INT NULL,
+  `Borough_Code` VARCHAR(15) NULL,
+  `Borough_Name` VARCHAR(15) NULL,
+  PRIMARY KEY (`BoroughID`),
+  CONSTRAINT `KnifeCrimeID`
+    FOREIGN KEY ()
+    REFERENCES `db_users`.`knife_crime_data` ()
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `YSBID`
+    FOREIGN KEY ()
+    REFERENCES `db_users`.`youth_budgets` ()
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+

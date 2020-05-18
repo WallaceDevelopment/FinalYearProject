@@ -198,13 +198,13 @@ app.post("/signin", passport.authenticate('local', {
 // Register Form POST Handling
 // Input from the user is checked here for validation. All Fields are trimmed and 'escaped' for database security.
 app.post("/register", [
-  check('username', 'Please enter a valid username').not().isEmpty().trim().custom(async username => {
+  check('username', 'Please enter a valid username').not().isEmpty().isLength({ min: 5 }).trim().custom(async username => {
     const value = await isUsernameInUse(username);
     if (value != 0) {
         req.flash('message', 'Username count is ' + value)
     } 
   }),
-  check('fullname', 'Name must be over five characters long.').not().isEmpty().isLength({ min: 5 }).trim().escape(),
+  check('fullname', 'Name must be over five characters long.').not().isEmpty().isLength({ min: 3 }).trim().escape(),
   check('email', 'Please enter a valid email address.').not().isEmpty().isEmail().normalizeEmail().trim().escape().custom(async email => {
     const evalue = await isEmailInUse(email)
     if (evalue != 0) {
