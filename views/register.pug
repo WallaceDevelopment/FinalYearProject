@@ -39,15 +39,15 @@ block content
             |
             .form-group
               label(for='email') Email
-              input.form-control(type='text', name='email', placeholder='Email' required)
+              input.form-control(type='text', name='email', placeholder='Email' maxlength='50' required)
             |
             .form-group
               label(for='password') Password
-              input.form-control(type='password', name='password', placeholder='Password' required)
+              input.form-control(type='password', name='password', placeholder='Password' maxlength='40' required)
             |
             .form-group
               label(for='confirmPassword') Confirm Password
-              input.form-control(type='password', name='confirmPassword', placeholder='Confirm Password' required)
+              input.form-control(type='password', name='confirmPassword', placeholder='Confirm Password' maxlength='40' required)
             |
             button.btn.btn-lg.btn-primary.btn-block(type='submit' id="register-btn") Register
             |
